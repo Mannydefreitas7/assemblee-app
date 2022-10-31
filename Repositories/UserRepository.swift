@@ -48,6 +48,9 @@ class UserRepository: ObservableObject {
     }
     
     func createUserFrom(loggedInUser user: User, newUser: ABUser) async throws {
+        var _user: ABUser = newUser
+        _user.userId = user.uid
+        _user.id = user.uid
         let data = try encoder.encode(newUser)
         try await firestore.document("users/\(user.uid)").setData(data)
     }
@@ -62,9 +65,9 @@ class UserRepository: ObservableObject {
     
     
     func update(_ user: ABUser) async throws {
-        if let uid = user.id {
+        
             let data = try encoder.encode(user)
-            try await firestore.document("users/\(uid)").setData(data, merge: true)
-        }
+            try await firestore.document("users/\(user.id)").setData(data, merge: true)
+        
     }
 }

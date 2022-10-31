@@ -15,10 +15,16 @@ struct ABTabView: View {
         TabView {
             NavigationStack {
                 TodayView()
-                
             }
             .tabItem {
-                Label("Today \(appState.currentUser?.userId ?? "")", systemImage: "calendar")
+                Label("Today", systemImage: "calendar")
+            }
+            
+            NavigationStack {
+                ProgramsView()
+            }
+            .tabItem {
+                Label("Programs", systemImage: "chart.bar.doc.horizontal")
             }
         }
         .environmentObject(appState)

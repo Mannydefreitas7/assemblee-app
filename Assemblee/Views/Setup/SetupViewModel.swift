@@ -23,8 +23,10 @@ final class SetupViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var congregationKit = CongregationServiceKit()
     private var cloudkitHelper = CloudKitHelper()
+    private var randomCodeGenerator = RandomPinGenerator.instance
     @Published var authenticationService = AuthenticationService()
     private var congregationRepository = CongregationRepository()
+    private var publisherRepository = PublisherRepository()
     @Published var languages: [WOLLanguage] = [WOLLanguage]()
     
     @Published var page: PageType = .welcome
@@ -37,7 +39,7 @@ final class SetupViewModel: ObservableObject {
     @Published var queryLocation: String = ""
     @Published var isSearching: Bool = true
     @Published var isLoading: Bool = false
-    
+  
     
     // MARK: Map related values
     @Published var locationManager = LocationManager()
@@ -52,6 +54,8 @@ final class SetupViewModel: ObservableObject {
     // Sign In With Apple
     @Published var authResult: AuthDataResult?
     @Published var errorMessage: String?
+    
+    @Published var logManager = LogManager()
     
     init() {
     
@@ -148,7 +152,8 @@ final class SetupViewModel: ObservableObject {
                 }
             }
         } catch {
-            print(error.localizedDescription)
+            logManager.display(.error, title: "Error", message: error.localizedDescription)
+
         }
     }
 
@@ -168,7 +173,7 @@ final class SetupViewModel: ObservableObject {
             }
         
         } catch {
-            print("ERROR: \(error.localizedDescription)")
+            logManager.display(.error, title: "Error", message: error.localizedDescription)
         }
     }
     
@@ -181,10 +186,9 @@ final class SetupViewModel: ObservableObject {
             
                 switch self.locationManager.checkStatus() {
                 case .notDetermined, .denied, .restricted:
-                    print("Location \(self.locationManager.manager.authorizationStatus.rawValue)")
+                    logManager.display(.error, title: "Error", message: "Location access not determined")
+                    self.locationManager.requestLocation()
                 case .authorizedAlways, .authorizedWhenInUse:
-                    print("Location authorized")
-                    
                     if let currentLocation = locationManager.manager.location, let symbol = language.mepsSymbol {
                         await self.fetchCongregations(for: currentLocation.coordinate, in: symbol)
                     }
@@ -194,8 +198,8 @@ final class SetupViewModel: ObservableObject {
      }
     
     func selectCongregation(from congregationList: GeoLocationList) {
-        self.congregation.id = congregationList.properties?.orgGUID
         self.congregation.language = language
+        self.congregation.passcode = randomCodeGenerator.generate(for: .congregation)
         self.congregation.properties = congregationList.properties
     }
     
@@ -205,7 +209,7 @@ final class SetupViewModel: ObservableObject {
         case .welcome:
             return true
         case .user:
-            if let email = newUser.email, !email.isEmpty && !confirmEmail.isEmpty && email == confirmEmail {
+            if let email = newUser.email, let firstName = newUser.firstName, !firstName.isEmpty, let lastName = newUser.lastName, !lastName.isEmpty, !email.isEmpty && !confirmEmail.isEmpty && email == confirmEmail {
                 return true
             }
         case .language:
@@ -213,11 +217,11 @@ final class SetupViewModel: ObservableObject {
                 return true
             }
         case .congregation:
-            if let _ = congregation.id {
+            if let _ = congregation.language {
                 return true
             }
         case .done:
-            if let email = newUser.email, let _ = language, let _ = congregation.id, !email.isEmpty && !confirmEmail.isEmpty && email == confirmEmail {
+            if let email = newUser.email, let _ = language, let _ = congregation.language, !email.isEmpty && !confirmEmail.isEmpty && email == confirmEmail {
                 return true
             }
         }
@@ -229,22 +233,46 @@ final class SetupViewModel: ObservableObject {
             let languages = try await congregationKit.getLanguages()
             self.languages = languages ?? []
         } catch {
-            print(error.localizedDescription)
+            logManager.display(.error, title: "Error", message: error.localizedDescription)
         }
     }
     
     func addCongregation() async {
         do {
             congregation.language = language
+            congregation.id = UUID().uuidString
             self.newUser.congregationId = try await self.congregationRepository.add(congregation)
         } catch {
-            print(error.localizedDescription)
+            logManager.display(.error, title: "Error", message: error.localizedDescription)
+        }
+    }
+    
+    func addPublisher() async {
+        do {
+            var publisher: ABPublisher = ABPublisher.newPublisher()
+            publisher.userId = newUser.id
+            publisher.email = newUser.email
+            publisher.congregation = newUser.congregation
+            publisher.firstName = newUser.firstName
+            publisher.lastName = newUser.lastName
+            publisher.code = randomCodeGenerator.generate(for: .publisher)
+            
+            try await publisherRepository.add(publisher)
+        } catch {
+            logManager.display(.error, title: "Error", message: error.localizedDescription)
         }
     }
 //
     func save(appState: AssembleeAppState) async {
         do {
             self.isLoading = true
+            
+            let congregationData = try congregation.encodedData()
+            let userData = try newUser.encodedData()
+            
+            UserDefaults.standard.set(congregationData, forKey: "congregation")
+            UserDefaults.standard.set(userData, forKey: "user")
+            
             if let provider = newUser.provider, provider == "apple.com", let user = authenticationService.user {
                 await self.addCongregation()
                 newUser.permissions = [ABPermission.admin.rawValue]
@@ -253,15 +281,11 @@ final class SetupViewModel: ObservableObject {
                 appState.showSetup = false
             } else {
                 if let email = newUser.email {
-                    let congregationData = try congregation.encodedData()
-                    let userData = try newUser.encodedData()
-                    UserDefaults.standard.set(congregationData, forKey: "congregation")
-                    UserDefaults.standard.set(userData, forKey: "user")
                     try await authenticationService.sendSignEmailLink(email: email)
                 }
             }
         } catch {
-            print(error.localizedDescription)
+            logManager.display(.error, title: "Error", message: error.localizedDescription)
         }
     }
 }
@@ -276,15 +300,15 @@ extension SetupViewModel {
     }
     
     func handleSignInWithAppleCompletion(_ result: Result<ASAuthorization, Error>) {
-        authenticationService.handleSignInWithAppleCompletion(result) { [weak self] user in
-            if let user, let displayName = user.displayName, let firstName = displayName.split(separator: " ").first, let lastName = displayName.split(separator: " ").last, let email = user.email {
-                self?.newUser.firstName = firstName.capitalized
-                self?.newUser.lastName = lastName.capitalized
-                self?.newUser.email = email
-                self?.confirmEmail = email
-                self?.newUser.provider = "apple.com"
+        authenticationService.handleSignInWithAppleCompletion(result) { user in
+            if let user, let email = user.email {
                 
-                self?.page = .language
+                self.newUser.email = email
+                self.confirmEmail = email
+                self.newUser.provider = "apple.com"
+                if self.validate() {
+                    self.page = .language
+                }
             }
         }
     }

@@ -11,62 +11,61 @@ import FirebaseFirestoreSwift
 import CongregationServiceKit
 import RealmSwift
 
-struct ABCongregation: Codable, Identifiable {
-    static func == (lhs: ABCongregation, rhs: ABCongregation) -> Bool {
-        return lhs.id == rhs.id
-    }
-    @DocumentID var id: String?
+struct ABCongregation: Identifiable {
+ 
+    var id: String = UUID().uuidString
     var passcode: String?
     var properties: Properties?
+    var secondaryClass: Int?
     var language: WOLLanguage?
 }
 
-extension ABCongregation {
+extension ABCongregation: Codable {
     
-    func encodedData() throws -> Data {
-        let encoder = JSONEncoder()
+     func encodedData() throws -> Data {
+        let encoder = PropertyListEncoder()
         let data = try encoder.encode(self)
         return data
     }
     
-    func decodedData(_ data: Data) throws -> Self {
-        let decoder = JSONDecoder()
+     func decodedData(_ data: Data) throws -> Self {
+        let decoder = PropertyListDecoder()
         let data = try decoder.decode(Self.self, from: data)
         return data
     }
     
 }
 
-class RMCongregation: Object {
-    @Persisted(primaryKey: true) var id: ObjectId
-    @Persisted var orgName: String = ""
-    @Persisted var orgGUID: String = ""
-    @Persisted var address: String = ""
-    @Persisted var languageCode: String = ""
-    @Persisted var midweek: RMMidweek?
-    @Persisted var weekend: RMMidweek?
-    @Persisted var language: RMLanguage?
-    
-}
+//class RMCongregation: Object {
+//    @Persisted(primaryKey: true) var id: ObjectId
+//    @Persisted var orgName: String = ""
+//    @Persisted var orgGUID: String = ""
+//    @Persisted var address: String = ""
+//    @Persisted var languageCode: String = ""
+//    @Persisted var midweek: RMMidweek?
+//    @Persisted var weekend: RMMidweek?
+//    @Persisted var language: RMLanguage?
+//
+//}
+//
+//class RMLanguage: EmbeddedObject {
+//    @Persisted var languageTitle: String = ""
+//    @Persisted var englishName: String = ""
+//    @Persisted var vernacularName: String = ""
+//    @Persisted var mepsSymbol: String = ""
+//    @Persisted var direction: RMDirection = .ltr
+//    @Persisted var isSignLanguage: Bool = false
+//    @Persisted var locale: String = ""
+//    @Persisted var researchConfigurationID: String = ""
+//    @Persisted var symbol: String = ""
+//}
 
-class RMLanguage: EmbeddedObject {
-    @Persisted var languageTitle: String = ""
-    @Persisted var englishName: String = ""
-    @Persisted var vernacularName: String = ""
-    @Persisted var mepsSymbol: String = ""
-    @Persisted var direction: RMDirection = .ltr
-    @Persisted var isSignLanguage: Bool = false
-    @Persisted var locale: String = ""
-    @Persisted var researchConfigurationID: String = ""
-    @Persisted var symbol: String = ""
-}
 
-
-
-public enum RMDirection: String, PersistableEnum {
-    case ltr
-    case rtl
-}
+//
+//public enum RMDirection: String, PersistableEnum {
+//    case ltr
+//    case rtl
+//}
 
 // MARK: - Schedule
 struct ABSchedule: Codable, Hashable {

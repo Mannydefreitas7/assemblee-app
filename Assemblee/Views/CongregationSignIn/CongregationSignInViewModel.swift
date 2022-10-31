@@ -15,6 +15,7 @@ class CongregationSignInViewModel: ObservableObject {
     @Published var code: String = ""
     private var cancellables = Set<AnyCancellable>()
     private var authenticationService = AuthenticationService()
+    
 }
 
 

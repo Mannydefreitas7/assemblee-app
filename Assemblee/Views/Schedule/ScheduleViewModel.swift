@@ -10,13 +10,14 @@ import Combine
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseFirestoreCombineSwift
+import CongregationServiceKit
 
 @MainActor
 final class ScheduleViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
     
-    private var partRepository = PartRepository()
+    @Published var partRepository = PartRepository()
     @Published var week: ABWeek?
     var congregation: String?
     @Published var chairmans = [ABPart]()
@@ -25,13 +26,20 @@ final class ScheduleViewModel: ObservableObject {
     @Published var life = [ABPart]()
     @Published var apply = [ABPart]()
     @Published var prayers = [ABPart]()
+    @Published var view: ABScheduleType = .midweek
     
-    init(week: ABWeek, congregation: String) {
+    init(week: ABWeek, congregation: ABCongregation) {
         self.week = week
         
-        if let id = week.id {
-            partRepository.loadParts(id, congregation: congregation)
-        }
+            if let id = week.id {
+                Task {
+                    do {
+                        try await partRepository.fetchParts(id, congregation: congregation.id)
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+            }
         
 
             // MARK: Prayers

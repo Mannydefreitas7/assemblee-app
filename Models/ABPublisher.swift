@@ -11,8 +11,8 @@ import FirebaseFirestoreSwift
 import RealmSwift
 let dateFormatter = DateFormatter()
 
-struct ABPublisher: Codable, Identifiable, Hashable {
-    static func == (lhs: ABPublisher, rhs: ABPublisher) -> Bool {
+struct ABPublisherAlt: Codable, Identifiable, Hashable {
+    static func == (lhs: ABPublisherAlt, rhs: ABPublisherAlt) -> Bool {
         return lhs.uid == rhs.uid
     }
     @DocumentID var id: String?
@@ -27,7 +27,7 @@ struct ABPublisher: Codable, Identifiable, Hashable {
     var privilege: String?
     var lastGivenDate: String?
     var phone: String?
-    var part: [ABPart]?
+    var part: [ABPartAlt]?
     
     var userId: String?
     var congregation: String?
@@ -50,29 +50,3 @@ struct ABPublisher: Codable, Identifiable, Hashable {
 
 }
 
-enum RMGender: String, PersistableEnum {
-    case brother
-    case sister
-}
-
-enum RMPrivilege: String, PersistableEnum {
-    case publisher
-    case assistant
-    case elder
-}
-
-class RMPublisher: Object {
-    @Persisted(primaryKey: true) var id: ObjectId
-    @Persisted var uid: String = ""
-    @Persisted var email: String = ""
-    @Persisted var firstName: String = ""
-    @Persisted var lastName: String = ""
-    @Persisted var gender: RMGender = .brother
-    @Persisted var isInvited: Bool = false
-    @Persisted var isWTConductor: Bool = false
-    @Persisted var privilege: RMPrivilege = .publisher
-    @Persisted var lastGivenDate: Date = .now
-    @Persisted var phone: String = ""
-    @Persisted var parts: List<RMPart>
-    @Persisted var congregation: RMCongregation?
-}

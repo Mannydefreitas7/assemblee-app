@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CongregationServiceKit
 
 struct SchedulePart: View {
     
@@ -17,8 +18,7 @@ struct SchedulePart: View {
             if let title = part.title {
                 Text(title)
                     .multilineTextAlignment(.leading)
-                    .padding(.bottom, 3)
-                    .padding(.top)
+                    .padding(.bottom)
             }
             
             if let assignee = part.assignee, let firstName = assignee.firstName, let lastName = assignee.lastName {

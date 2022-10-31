@@ -7,10 +7,9 @@
 
 import Foundation
 import FirebaseFirestoreSwift
-import RealmSwift
 
 struct ABUser: Codable, Hashable {
-    @DocumentID var id: String?
+    var id: String = UUID().uuidString
     var uid: String?
     var firstName: String?
     var userId: String?
@@ -28,28 +27,15 @@ struct ABUser: Codable, Hashable {
 extension ABUser {
     
     func encodedData() throws -> Data {
-        let encoder = JSONEncoder()
+        let encoder = PropertyListEncoder()
         let data = try encoder.encode(self)
         return data
     }
     
     func decodedData(_ data: Data) throws -> Self {
-        let decoder = JSONDecoder()
+        let decoder = PropertyListDecoder()
         let data = try decoder.decode(Self.self, from: data)
         return data
     }
     
-}
-
-
-class RMUser: Object {
-    @Persisted(primaryKey: true) var _id: ObjectId
-    @Persisted var uid: String = ""
-    @Persisted var firstName: String = ""
-    @Persisted var userId: String = ""
-    @Persisted var congregation: String = ""
-    @Persisted var email: String = ""
-    @Persisted var isEmailVerified: Bool = false
-    @Persisted var isOnline: Bool = false
-    @Persisted var lastName: String = ""
 }

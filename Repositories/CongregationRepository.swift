@@ -24,14 +24,28 @@ class CongregationRepository: ObservableObject {
             let data = try await firestore.document("congregations/\(id)").getDocument()
             
             self.congregation = try data.data(as: ABCongregation.self)
+            if let congregation {
+                let encodedData = try congregation.encodedData()
+                UserDefaults.standard.set(encodedData, forKey: "congregation")
+            }
         }
+    }
+    
+    func fetchLocalCongregation(from data: Data) -> ABCongregation? {
+        do {
+            let _congregation = try ABCongregation().decodedData(data)
+            return _congregation
+        } catch {
+            print(error.localizedDescription)
+        }
+        return nil
     }
     
     func add(_ congregation: ABCongregation) async throws -> String {
         let data = try encoder.encode(congregation)
-        let document = try await firestore.collection("congregations").addDocument(data: data)
+        try await firestore.document("congregations/\(congregation.id)").setData(data, merge: true)
         self.congregation = congregation
-        return document.documentID
+        return congregation.id
     }
     
 }

@@ -6,71 +6,42 @@
 //
 
 import SwiftUI
-import RealmSwift
+import CongregationServiceKit
+import FirebaseFirestoreSwift
 
 struct TodayView: View {
     
     @EnvironmentObject var appState: AssembleeAppState
     @StateObject var viewModel = TodayViewModel()
-    @ObservedResults(RMWeek.self) var weeks
     
     var body: some View {
         
         ZStack {
+            
             Color(.secondarySystemBackground)
                 .ignoresSafeArea()
-            HeaderScrollView(image: "today", height: getRect().height / 2) {
-                if weeks.isEmpty {
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text("Cette Semaine")
-                                .font(.caption)
-                                .foregroundColor(.white.opacity(0.5))
-                            Text(viewModel.currentWeek?.range ?? "No schedules")
-                                .font(.title3)
-                                .foregroundColor(.white)
-                                .bold()
-                        }
-                        Spacer()
-                        NavigationLink("View", value: viewModel.currentWeek.self)
-                            .bold()
-                            .buttonStyle(.borderedProminent)
-                            .buttonBorderShape(.capsule)
-                    }
+            
+            HeaderScrollView(image: "today", height: getRect().height / (viewModel.hasCurrentWeek ? 2 : 3)) {
+                
+                if let currentWeek = viewModel.currentWeek, !viewModel.weeks.isEmpty {
+                    currentWeekRow(currentWeek)
                 }
                 
             } content: {
                 LazyVStack(alignment: .leading) {
                     
-                    if weeks.isEmpty {
+                    Text("Schedules")
+                        .bold()
+                        .font(.system(.title3, design: .rounded))
+                        .padding(.leading)
+                        .padding(.top)
+                    
+                    if viewModel.pinnedWeeks.isEmpty {
                         
                         emptyState()
 
                     } else {
-                        VStack(alignment: .leading) {
-                            Text(appState.currentUser?.uid ?? "")
-                            
-                            Text("Schedules")
-                                .bold()
-                                .font(.system(.title3, design: .rounded))
-                                .padding(.leading)
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack {
-                                    ForEach(viewModel.pinnedWeeks) { week in
-                                        NavigationLink(value: week) {
-                                            ScheduleCard(week: week)
-                                        }
-                                        .buttonStyle(.plain)
-                                    }
-                                }
-                                .navigationDestination(for: ABWeek.self) { week in
-                                    if let user = appState.currentUser, let congregation = user.congregation {
-                                        ScheduleView(viewModel: ScheduleViewModel(week: week, congregation: congregation))
-                                    }
-                                }
-                                .padding(.horizontal)
-                            }
-                        }
+                        pinnedWeeks()
                     }
                 }
             }
@@ -80,7 +51,6 @@ struct TodayView: View {
         .sheet(isPresented: $viewModel.showUserView) {
             UserView(appState: appState)
         }
-        
         .toolbar {
             ToolbarItem {
                 if let currentUser = appState.currentUser, let firstName = currentUser.firstName, let lastName = currentUser.lastName {
@@ -94,36 +64,72 @@ struct TodayView: View {
             }
         }
     }
-    
+    // MARK: Pinned Weeks
+    @ViewBuilder func pinnedWeeks() -> some View {
+        VStack(alignment: .leading) {
+
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack {
+                    ForEach(viewModel.pinnedWeeks) { week in
+                        NavigationLink(value: week) {
+                            ScheduleCard(week: week)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .navigationDestination(for: ABWeek.self) { week in
+                    if let congregation = appState.congregation {
+                        ScheduleView(viewModel: ScheduleViewModel(week: week, congregation: congregation))
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }
+    }
+    // MARK: Current Week
+    @ViewBuilder func currentWeekRow(_ currentWeek: ABWeek) -> some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text("Cette Semaine")
+                    .font(.caption)
+                    .foregroundColor(.white.opacity(0.5))
+                Text(currentWeek.range ?? "")
+                    .font(.title3)
+                    .foregroundColor(.white)
+                    .bold()
+            }
+            Spacer()
+            NavigationLink("View", value: currentWeek.self)
+                .bold()
+                .buttonStyle(.borderedProminent)
+                .buttonBorderShape(.capsule)
+        }
+    }
+    // MARK: Empty weeks state
     @ViewBuilder func emptyState() -> some View {
         VStack {
             Image(systemName: "doc.on.doc")
                 .padding(7)
                 .background(Color.secondary, in: Circle())
-                .scaleEffect(2)
+                .scaleEffect(1.5)
                 .padding()
                 .opacity(0.3)
-            Text("You have no schedules.")
-                .font(.title3)
+            Text("There are no schedules on the board yet.")
                 .foregroundColor(.secondary)
                 .bold()
-            Button {
-                appState.showAddSchedule.toggle()
-            } label: {
-                Label("Schedule", systemImage: "calendar.badge.plus")
-            }
-            .buttonStyle(.borderedProminent)
-            .buttonBorderShape(.roundedRectangle)
+                .multilineTextAlignment(.center)
+                .frame(width: getRect().width / 2)
+//            Button {
+//                appState.showAddSchedule.toggle()
+//            } label: {
+//                Label("Schedule", systemImage: "calendar.badge.plus")
+//            }
+//            .buttonStyle(.borderedProminent)
+//            .buttonBorderShape(.roundedRectangle)
+//            .controlSize(.large)
         }
+        .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-        .padding(.top, 50)
-        
     }
 
-}
-
-struct TodayView_Previews: PreviewProvider {
-    static var previews: some View {
-        TodayView()
-    }
 }

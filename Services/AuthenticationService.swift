@@ -30,13 +30,14 @@ class AuthenticationService: ObservableObject {
     @Published var isValid = false
     @Published var currentNonce: String?
     @Published var credential: AuthCredential?
+    @Published var logManager: LogManager = LogManager()
     
     private func registerStateListener() {
         
         do {
           try Auth.auth().useUserAccessGroup("FUU334NWUK.com.wolinweb.Assemblee.shared")
-        } catch let error as NSError {
-          print("Error changing user access group: %@", error)
+        } catch {
+            logManager.display(.error, title: "Error", message: error.localizedDescription)
         }
        
         if let handle = handle {
@@ -91,9 +92,9 @@ class AuthenticationService: ObservableObject {
         if let user = Auth.auth().currentUser {
             let changeRequest = user.createProfileChangeRequest() // (3)
             changeRequest.displayName = displayName
-            changeRequest.commitChanges { error in // (4)
+            changeRequest.commitChanges { [weak self] error in // (4)
                 if error != nil {
-                    print("Successfully updated display name for user [\(user.uid)] to [\(displayName)]")
+                    self?.logManager.display(.success, title: "Successfully updated")
                 }
             }
         }
@@ -104,9 +105,7 @@ class AuthenticationService: ObservableObject {
 extension AuthenticationService {
     private func wait() async {
       do {
-        print("Wait")
         try await Task.sleep(nanoseconds: 1_000_000_000)
-        print("Done")
       }
       catch { }
     }
@@ -114,10 +113,10 @@ extension AuthenticationService {
     func signOut() {
       do {
         try Auth.auth().signOut()
+        logManager.display(.info, title: "Signed Out")
       }
       catch {
-        print(error)
-        errorMessage = error.localizedDescription
+          logManager.display(.error, title: "Error", message: error.localizedDescription)
       }
     }
     
@@ -127,7 +126,7 @@ extension AuthenticationService {
         return true
       }
       catch {
-        errorMessage = error.localizedDescription
+          logManager.display(.error, title: "Error", message: error.localizedDescription)
         return false
       }
     }
@@ -147,7 +146,8 @@ extension AuthenticationService {
     
     func handleSignInWithAppleCompletion(_ result: Result<ASAuthorization, Error>, completion: @escaping (User?) -> Void) {
       if case .failure(let failure) = result {
-        errorMessage = failure.localizedDescription
+          print(failure.localizedDescription)
+          logManager.display(.error, title: "Error", message: failure.localizedDescription)
       }
       else if case .success(let authorization) = result {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
@@ -173,7 +173,7 @@ extension AuthenticationService {
               completion(result.user)
             }
             catch {
-              print("Error authenticating: \(error.localizedDescription)")
+                print(error.localizedDescription)
             }
           }
         }
@@ -181,6 +181,7 @@ extension AuthenticationService {
     }
     
     func updateDisplayName(for user: User, with appleIDCredential: ASAuthorizationAppleIDCredential, force: Bool = false) async {
+        
       if let currentDisplayName = Auth.auth().currentUser?.displayName, !currentDisplayName.isEmpty {
         // current user is non-empty, don't overwrite it
       }
@@ -192,8 +193,8 @@ extension AuthenticationService {
           self.displayName = Auth.auth().currentUser?.displayName ?? ""
         }
         catch {
-          print("Unable to update the user's displayname: \(error.localizedDescription)")
-          errorMessage = error.localizedDescription
+            print(error.localizedDescription)
+            logManager.display(.error, title: error.localizedDescription)
         }
       }
     }
@@ -205,10 +206,13 @@ extension AuthenticationService {
         Task {
           do {
             let credentialState = try await appleIDProvider.credentialState(forUserID: appleProviderData.uid)
+              
             switch credentialState {
             case .authorized:
+                print("AUTHORIZED")
               break // The Apple ID credential is valid.
             case .revoked, .notFound:
+                print("notFound")
               // The Apple ID credential is either revoked or was not found, so show the sign-in UI.
               self.signOut()
             default:
@@ -216,6 +220,8 @@ extension AuthenticationService {
             }
           }
           catch {
+              print(error.localizedDescription)
+              logManager.display(.error, title: error.localizedDescription)
           }
         }
       }

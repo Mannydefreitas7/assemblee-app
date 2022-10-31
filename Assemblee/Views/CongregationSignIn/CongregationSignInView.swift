@@ -117,6 +117,7 @@ struct CongregationSignInView: View {
             .background(Color(.secondarySystemBackground), in: Rectangle())
             .sheet(isPresented: $appState.showSetup) {
                 SetupView()
+                    .environmentObject(appState)
             }
            
         }

@@ -8,29 +8,30 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-import RealmSwift
 
-struct ABPart: Codable, Identifiable, Hashable {
-    var id: String?
-    var assignee: ABPublisher?
-    var assistant: ABPublisher?
+struct ABPartAlt: Codable, Identifiable, Hashable {
+    @DocumentID var id: String?
+    var assignee: ABPublisherAlt?
+    var assistant: ABPublisherAlt?
+    var inPerson: Bool = true
     var date: Timestamp?
-    var gender: [ABGender.RawValue]?
-    var hasAssistant: Bool?
-    var hasDiscussion: Bool?
+    var gender: [ABGender.RawValue] = [ABGender.brother.rawValue]
+    var hasAssistant: Bool = false
+    var hasDiscussion: Bool = false
     var index: Int?
-    var isConfirmed: Bool?
-    var isEmailed: Bool?
-    var isCalendarAdded: Bool?
+    var isConfirmed: Bool = false
+    var isEmailed: Bool = false
+    var isCalendarAdded: Bool = false
     var length: String?
     var lengthTime: TimeInterval?
     var parent: ABParent.RawValue?
     var path: String?
-    var privilege: [String]?
+    var privilege: [ABPrivilege.RawValue] = [ABPrivilege.publisher.rawValue]
     var subTitle: String?
     var title: String?
     var week: String?
-    var schedule: ABWeek?
+    var schedule: ABWeekAlt?
+    var type: ABScheduleType.RawValue = ABScheduleType.weekend.rawValue
     
     var shortTitle: String {
         self.title?.trimmingCharacters(in: .whitespaces).trimmingCharacters(in: .newlines) ?? ""
@@ -40,34 +41,36 @@ struct ABPart: Codable, Identifiable, Hashable {
         self.date?.dateValue()
     }
     
-    var includeAssistant: Bool {
-        self.hasAssistant ?? false
+    var genders: [ABGender] {
+        self.gender.map { ABGender(rawValue: $0) ?? ABGender.brother }
+    }
+    
+    var privileges: [ABPrivilege] {
+        self.privilege.map { ABPrivilege(rawValue: $0) ?? ABPrivilege.publisher }
     }
 }
 
-class RMPart: Object {
-    @Persisted(primaryKey: true) var id: ObjectId
-    @Persisted var assignee: RMPublisher?
-    @Persisted var assistant: RMPublisher?
-    @Persisted var date: Date?
-    @Persisted var gender: List<RMGender>
-    @Persisted var hasAssistant: Bool?
-    @Persisted var hasDiscussion: Bool?
-    @Persisted var index: Int?
-    @Persisted var isConfirmed: Bool?
-    @Persisted var isEmailed: Bool?
-    @Persisted var isCalendarAdded: Bool?
-    @Persisted var length: String?
-    @Persisted var lengthTime: Double?
-    @Persisted var parent: RMParent = .chairman
-    @Persisted var path: String?
-    @Persisted var privilege: List<RMPrivilege>
-    @Persisted var subTitle: String?
-    @Persisted var title: String?
-    @Persisted var week: String?
-    @Persisted var schedule: RMWeek?
-    @Persisted var createdAt: Date = .now
+
+extension ABPartAlt {
+    static func weekEndParts(week: ABWeekAlt, date: Date) -> [ABPartAlt] {
+        let parts: [ABPartAlt] = [
+            .init(date: Timestamp(date: date), gender: [ABGender.brother.rawValue], hasAssistant: false, hasDiscussion: false, index: 2, isConfirmed: false, isEmailed: false, isCalendarAdded: false, parent: ABParent.prayer.rawValue, privilege: [ABPrivilege.publisher.rawValue, ABPrivilege.assistant.rawValue, ABPrivilege.elder.rawValue], title: "Prayer", schedule: week),
+            .init(date: Timestamp(date: date), gender: [ABGender.brother.rawValue], hasAssistant: false, hasDiscussion: false, index: 3, isConfirmed: false, isEmailed: false, isCalendarAdded: false, parent: ABParent.prayer.rawValue, privilege: [ABPrivilege.publisher.rawValue, ABPrivilege.assistant.rawValue, ABPrivilege.elder.rawValue], title: "Prayer", schedule: week),
+            .init(date: Timestamp(date: date), gender: [ABGender.brother.rawValue], hasAssistant: false, hasDiscussion: false, index: 1, isConfirmed: false, isEmailed: false, isCalendarAdded: false, parent: ABParent.chairman.rawValue, privilege: [ABPrivilege.elder.rawValue], title: "Chairman", schedule: week),
+            .init(date: Timestamp(date: date), gender: [ABGender.brother.rawValue], hasAssistant: false, hasDiscussion: false, index: 0, isConfirmed: false, isEmailed: false, isCalendarAdded: false, parent: ABParent.talk.rawValue, privilege: [ABPrivilege.elder.rawValue, ABPrivilege.assistant.rawValue], title: "Speaker", schedule: week),
+            .init(date: Timestamp(date: date), gender: [ABGender.brother.rawValue], hasAssistant: false, hasDiscussion: false, index: 0, isConfirmed: false, isEmailed: false, isCalendarAdded: false, parent: ABParent.wt.rawValue, privilege: [ABPrivilege.elder.rawValue], title: "Watchtower Conductor", schedule: week)
+        ]
+        return parts
+    }
     
+    static func midWeekParts(week: ABWeekAlt, date: Date) -> [ABPartAlt] {
+        let parts: [ABPartAlt] = [
+            .init(date: Timestamp(date: date), gender: [ABGender.brother.rawValue], hasAssistant: false, hasDiscussion: false, index: 0, isConfirmed: false, isEmailed: false, isCalendarAdded: false, parent: ABParent.prayer.rawValue, privilege: [ABPrivilege.publisher.rawValue, ABPrivilege.assistant.rawValue, ABPrivilege.elder.rawValue], title: "Prayer", schedule: week, type: ABScheduleType.midweek.rawValue),
+            .init(date: Timestamp(date: date), gender: [ABGender.brother.rawValue], hasAssistant: false, hasDiscussion: false, index: 1, isConfirmed: false, isEmailed: false, isCalendarAdded: false, parent: ABParent.prayer.rawValue, privilege: [ABPrivilege.publisher.rawValue, ABPrivilege.assistant.rawValue, ABPrivilege.elder.rawValue], title: "Prayer", schedule: week, type: ABScheduleType.midweek.rawValue),
+            .init(date: Timestamp(date: date), gender: [ABGender.brother.rawValue], hasAssistant: false, hasDiscussion: false, index: 0, isConfirmed: false, isEmailed: false, isCalendarAdded: false, parent: ABParent.chairman.rawValue, privilege: [ABPrivilege.elder.rawValue], title: "Chairman", schedule: week, type: ABScheduleType.midweek.rawValue),
+        ]
+        return parts
+    }
 }
 
 

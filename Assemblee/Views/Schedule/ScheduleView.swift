@@ -17,27 +17,29 @@ struct ScheduleView: View {
 
         
         var body: some View {
-
-            ScrollView(.vertical, showsIndicators: false) {
-                LazyVStack(alignment: .leading) {
-                    chairman(for:0)
-                    prayer(for:0)
-                    treasures(color: treasuresColor, title: STRING_TREASURES)
-                    apply(color: applyColor, title: STRING_APPLY)
-                    life(color: lifeColor, title: STRING_LIFE)
-                    secondary(title: STRING_SECONDARY)
-                    prayer(for:1)
+            
+            Group {
+                
+                ScrollView(.vertical, showsIndicators: false) {
+                    LazyVStack(alignment: .leading) {
+                        chairman(for:0)
+                        prayer(for:0)
+                        treasures(color: treasuresColor, title: STRING_TREASURES)
+                        apply(color: applyColor, title: STRING_APPLY)
+                        life(color: lifeColor, title: STRING_LIFE)
+                        secondary(title: STRING_SECONDARY)
+                        prayer(for:1)
+                    }
+                    .padding(.horizontal, 30)
+                    .padding(.bottom)
+                    Divider()
                 }
-                .padding(30)
+
             }
+        
             .background(Color(.secondarySystemGroupedBackground))
-            .navigationTitle(viewModel.week?.range ?? "Date")
-            .navigationBarTitleDisplayMode(.inline)
-//            .toolbar {
-//                ToolbarItem(placement: .navigationBarTrailing) {
-//                    downloadButton()
-//                }
-//            }
+            .navigationTitle(viewModel.week?.range ?? "")
+            
         }
         // MARK: Chairman
         @ViewBuilder func chairman(for index: Int) -> some View {

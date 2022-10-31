@@ -15,8 +15,5 @@ class SignInViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     @Published var showSetup: Bool = false
-    
-
-    
-    
+  
 }

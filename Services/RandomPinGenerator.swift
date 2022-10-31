@@ -7,18 +7,32 @@
 
 import Foundation
 
-class RandomPinGenerator {
+final class RandomPinGenerator {
     
     let characters: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
     static let instance = RandomPinGenerator()
     
-    func generate() -> String {
-        let partition_1 = String((0..<3).compactMap { _ in characters.randomElement() })
-        let partition_2 = String((0..<3).compactMap { _ in characters.randomElement() })
-        let partition_3 = String((0..<4).compactMap { _ in characters.randomElement() })
-        
-        let code = "\(partition_1)-\(partition_2)-\(partition_3)"
-        return code
+
+    
+    func code(for digits: Int) -> String {
+        let partition = String((0..<digits).compactMap { _ in characters.randomElement() })
+        return partition
+    }
+    
+}
+
+extension RandomPinGenerator {
+    
+    enum CodeType {
+        case congregation
+        case publisher
+    }
+    
+    func generate(for codeType: CodeType) -> String {
+        switch codeType {
+        case .congregation: return self.code(for: 4)
+        case .publisher: return "\(self.code(for: 3))-\(self.code(for: 3))"
+        }
     }
     
 }

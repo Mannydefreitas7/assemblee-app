@@ -7,6 +7,7 @@
 
 import Foundation
 import RealmSwift
+import CongregationServiceKit
 
 enum ABGender: String {
     case brother = "brother"
@@ -23,7 +24,15 @@ enum ABParent: String {
     case living = "life"
     case prayer = "prayer"
     case chairman = "chairman"
+    //case secondary = "secondary"
+}
+
+
+enum ABScheduleType: String {
+    case midweek = "midweek"
+    case weekend = "weekend"
     case secondary = "secondary"
+    case tertiary = "tertiary"
 }
 
 enum RMParent: String, PersistableEnum {
@@ -65,15 +74,6 @@ enum ABAssignmentType {
     case all
     case confirmed
     case unconfirmed
-}
-
-enum ABPermission: String {
-    case programs = "programs"
-    case speakers = "speakers"
-    case admin = "admin"
-    case publishers = "publishers"
-    case superAdmin = "superAdmin"
-    case editor = "editor"
 }
 
 let permissions : [ABPermission] = [.programs, .speakers, .admin, .publishers, .superAdmin, .editor]

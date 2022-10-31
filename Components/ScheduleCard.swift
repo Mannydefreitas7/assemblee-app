@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RealmSwift
+import CongregationServiceKit
 
 struct ScheduleCard: View {
     var week: ABWeek

@@ -23,6 +23,7 @@ struct SetupView: View {
             
             Group {
                 containedView()
+                    .toastAlert(logManager: viewModel.logManager)
             }
             .navigationTitle("Account Setup")
             .navigationBarTitleDisplayMode(.inline)
@@ -106,19 +107,28 @@ struct SetupView: View {
                 
                 Form {
                     
-                    LabelTextField(label: "First Name", prompt: "Joe", text: $viewModel.newUser.firstName ?? "")
+                    LabelTextField(label: "First Name (required)", prompt: "Joe", text: $viewModel.newUser.firstName ?? "")
                         .focused($focusedField, equals: "first_name")
                         .onSubmit {
                             focusedField = "last_name"
                         }
                         .submitLabel(.next)
                     
-                    LabelTextField(label: "Last Name", prompt: "Publisher", text: $viewModel.newUser.lastName ?? "")
+                    LabelTextField(label: "Last Name (required)", prompt: "Publisher", text: $viewModel.newUser.lastName ?? "")
                         .focused($focusedField, equals: "last_name")
                         .onSubmit {
                             focusedField = "email"
                         }
                         .submitLabel(.next)
+                    
+                        HStack {
+                          VStack { Divider() }
+                          Text("and")
+                          VStack { Divider() }
+                        }
+                        .padding(.vertical)
+ 
+                    
                     LabelTextField(label: "Email", prompt: "joe@publisher.com", text: $viewModel.newUser.email ?? "", keyboardType: .emailAddress)
                         .textContentType(.emailAddress)
                         .focused($focusedField, equals: "email")
@@ -150,6 +160,7 @@ struct SetupView: View {
                     appleSignInButton()
                 }
                 .padding(.horizontal)
+                .padding(.bottom)
                 
             }
             
@@ -579,6 +590,7 @@ struct SetupView: View {
     
     @ViewBuilder func appleSignInButton() -> some View {
         SignInWithAppleButton(.continue) { request in
+            print(request)
             viewModel.handleSignInWithAppleRequest(request)
           } onCompletion: { result in
             viewModel.handleSignInWithAppleCompletion(result)

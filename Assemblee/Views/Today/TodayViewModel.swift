@@ -9,12 +9,12 @@ import Foundation
 import Combine
 import FirebaseFirestore
 import SwiftDate
+import CongregationServiceKit
 
 @MainActor
 class TodayViewModel: ObservableObject {
     
     @Published var weekRepository = WeekRepository()
-    @Published var realm = RealmManager()
     @Published var showUserView: Bool = false
     @Published var weeks = [ABWeek]()
     @Published var pinnedWeeks = [ABWeek]()
@@ -22,8 +22,9 @@ class TodayViewModel: ObservableObject {
     @Published var appState = AssembleeAppState()
     @Published var currentUser: ABUser?
     @Published var currentWeek: ABWeek?
+    @Published var hasCurrentWeek: Bool = false
     private var cancellables = Set<AnyCancellable>()
-    
+    @Published var logManager = LogManager()
     
     init() {
         
@@ -31,13 +32,9 @@ class TodayViewModel: ObservableObject {
             .assign(to: \.currentUser, on: self)
             .store(in: &cancellables)
         
-        appState.$currentUser
+        appState.$congregation
             .compactMap { $0 }
-            .sink { user in
-                Task {
-                    await self.fetchWeeks(for: user)
-                }
-            }
+            .sink { self.fetchWeeks($0) }
             .store(in: &cancellables)
         
         weekRepository.$weeks
@@ -55,15 +52,20 @@ class TodayViewModel: ObservableObject {
             .assign(to: \.currentWeek, on: self)
             .store(in: &cancellables)
         
+        $currentWeek
+            .map { $0 != nil }
+            .assign(to: \.hasCurrentWeek, on: self)
+            .store(in: &cancellables)
+        
 
     }
     
     
-    func fetchWeeks(for user: ABUser) async {
+    func fetchWeeks(_ congregation: ABCongregation) {
         do {
-            try await weekRepository.fetch(user: user)
+            try weekRepository.listen(for: congregation)
         } catch {
-            print(error.localizedDescription)
+            logManager.displayError(title: error.localizedDescription)
         }
     }
     

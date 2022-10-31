@@ -9,35 +9,6 @@ import Foundation
 import SwiftUI
 import Combine
 
-extension View {
-    func getSafeArea() -> UIEdgeInsets {
-        let null = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            return null
-        }
-        guard let safeArea = screen.windows.first?.safeAreaInsets else {
-            return null
-        }
-        return safeArea
-    }
-}
-
-extension View {
-    func getRect() -> CGRect {
-        return UIScreen.main.bounds
-    }
-    
-    func getRootViewController() -> UIViewController {
-        guard let screen = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
-            return .init()
-        }
-        guard let root = screen.windows.first?.rootViewController else {
-            return .init()
-        }
-        return root
-    }
-}
-
 extension ViewModifier {
     func getRect() -> CGRect {
         return UIScreen.main.bounds
@@ -53,66 +24,6 @@ extension ViewModifier {
         return root
     }
 }
-
-extension View {
-    
-    /// Sets the text color for a navigation bar title.
-       /// - Parameter color: Color the title should be
-       ///
-       /// Supports both regular and large titles.
-       @available(iOS 14, *)
-       func navigationBarTitleTextColor(_ color: Color) -> some View {
-           let uiColor = UIColor(color)
-       
-           // Set appearance for both normal and large sizes.
-           UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: uiColor ]
-           UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: uiColor ]
-       
-           return self
-       }
-    
-  func tabViewStyle(backgroundColor: Color? = nil,
-                    itemColor: Color? = nil,
-                    selectedItemColor: Color? = nil,
-                    badgeColor: Color? = nil) -> some View {
-    onAppear {
-      let itemAppearance = UITabBarItemAppearance()
-        
-        if let uiItemColor = itemColor?.cgColor {
-            itemAppearance.normal.iconColor = UIColor(cgColor: uiItemColor)
-        itemAppearance.normal.titleTextAttributes = [
-          .foregroundColor: uiItemColor
-        ]
-      }
-      if let uiSelectedItemColor = selectedItemColor?.cgColor {
-          itemAppearance.selected.iconColor = UIColor(cgColor:uiSelectedItemColor)
-        itemAppearance.selected.titleTextAttributes = [
-          .foregroundColor: uiSelectedItemColor
-        ]
-      }
-      if let uiBadgeColor = badgeColor?.cgColor {
-          itemAppearance.normal.badgeBackgroundColor = UIColor(cgColor:uiBadgeColor)
-          itemAppearance.selected.badgeBackgroundColor = UIColor(cgColor:uiBadgeColor)
-      }
-
-      let appearance = UITabBarAppearance()
-      if let uiBackgroundColor = backgroundColor?.cgColor {
-          appearance.backgroundColor = UIColor(cgColor:uiBackgroundColor)
-          
-      }
-
-      appearance.stackedLayoutAppearance = itemAppearance
-      appearance.inlineLayoutAppearance = itemAppearance
-      appearance.compactInlineLayoutAppearance = itemAppearance
-      UITabBar.appearance().standardAppearance = appearance
-        
-      if #available(iOS 15.0, *) {
-        UITabBar.appearance().scrollEdgeAppearance = appearance
-      }
-    }
-  }
-}
-
 
 extension Sequence {
     func asyncMap<T>(

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CongregationServiceKit
 
 struct MeetingCard<Content:View>: View {
     

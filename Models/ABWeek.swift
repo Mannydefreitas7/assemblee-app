@@ -10,10 +10,9 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import RealmSwift
 
-struct ABWeek: Codable, Identifiable, Hashable {
+struct ABWeekAlt: Codable, Identifiable, Hashable {
     
-   // @DocumentID var id: String?
-    var id: String?
+    @DocumentID var id: String?
     var date: Timestamp?
     var isCOVisit: Bool
     var isSent: Bool
@@ -22,8 +21,8 @@ struct ABWeek: Codable, Identifiable, Hashable {
 
 }
 
-extension ABWeek {
-    static let week = ABWeek(date: Timestamp(date: .now), isCOVisit: false, isSent: false, range: "December 1 - 7", isDownloaded: false)
+extension ABWeekAlt {
+    static let week = ABWeekAlt(date: Timestamp(date: .now), isCOVisit: false, isSent: false, range: "December 1 - 7", isDownloaded: false)
     static let weeks = Array(repeating: week, count: 9)
 }
 

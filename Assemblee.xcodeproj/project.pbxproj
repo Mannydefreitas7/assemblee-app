@@ -46,6 +46,20 @@
 		64134BD828F6629C00009C61 /* ABWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64134BD728F6629C00009C61 /* ABWeek.swift */; };
 		64134BDA28F7B42600009C61 /* ScheduleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64134BD928F7B42600009C61 /* ScheduleCard.swift */; };
 		6438CF8D2908DBBA00732FDD /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6438CF8C2908DBBA00732FDD /* CalendarView.swift */; };
+		64471D14290EF01100F09C58 /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D13290EF01100F09C58 /* CalendarViewModel.swift */; };
+		64471D17290F64F100F09C58 /* ProgramsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D16290F64F100F09C58 /* ProgramsView.swift */; };
+		64471D19290F66C500F09C58 /* ProgramsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D18290F66C500F09C58 /* ProgramsViewModel.swift */; };
+		64471D1C290F70D100F09C58 /* ToastModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D1B290F70D100F09C58 /* ToastModifier.swift */; };
+		64471D1E290F71A300F09C58 /* Extension+View.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D1D290F71A300F09C58 /* Extension+View.swift */; };
+		64471D20290F722600F09C58 /* CalendarModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D1F290F722600F09C58 /* CalendarModifier.swift */; };
+		64471D22290F803000F09C58 /* Extension+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D21290F803000F09C58 /* Extension+Date.swift */; };
+		64471D25291020CE00F09C58 /* CodableFirebase in Frameworks */ = {isa = PBXBuildFile; productRef = 64471D24291020CE00F09C58 /* CodableFirebase */; };
+		64471D2729102CE000F09C58 /* ProgramDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D2629102CE000F09C58 /* ProgramDetailView.swift */; };
+		64471D2929102D7800F09C58 /* ProgramDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D2829102D7800F09C58 /* ProgramDetailViewModel.swift */; };
+		64471D2B29102F2A00F09C58 /* PartRowCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D2A29102F2A00F09C58 /* PartRowCell.swift */; };
+		64471D2E291037DD00F09C58 /* PartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D2D291037DD00F09C58 /* PartView.swift */; };
+		64471D30291037EC00F09C58 /* PartViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D2F291037EC00F09C58 /* PartViewModel.swift */; };
+		64471D33291051C600F09C58 /* PublisherRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D32291051C600F09C58 /* PublisherRepository.swift */; };
 		645A488828F96BD700FD1228 /* MeetingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645A488728F96BD700FD1228 /* MeetingCard.swift */; };
 		645A488A28F96C0B00FD1228 /* constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645A488928F96C0B00FD1228 /* constants.swift */; };
 		645A488D28F96F1500FD1228 /* ABTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645A488C28F96F1500FD1228 /* ABTabView.swift */; };
@@ -65,6 +79,9 @@
 		6486AD202907AF4400F37694 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6486AD1F2907AF4400F37694 /* RealmManager.swift */; };
 		6486AD222907B06700F37694 /* CloudKitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6486AD212907B06700F37694 /* CloudKitHelper.swift */; };
 		64B4C7AC290DF15000FA232E /* CongregationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B4C7AB290DF15000FA232E /* CongregationRepository.swift */; };
+		64B4C7AF290E143A00FA232E /* AlertToast in Frameworks */ = {isa = PBXBuildFile; productRef = 64B4C7AE290E143A00FA232E /* AlertToast */; };
+		64B4C7B1290E145400FA232E /* LogManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B4C7B0290E145400FA232E /* LogManager.swift */; };
+		64B4C7B3290E148200FA232E /* ToastItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B4C7B2290E148200FA232E /* ToastItem.swift */; };
 		64B5B5BA28FBA7140065558F /* CongregationSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B5B5B928FBA7140065558F /* CongregationSignInView.swift */; };
 		64B5B5BC28FBA7450065558F /* CongregationSignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B5B5BB28FBA7450065558F /* CongregationSignInViewModel.swift */; };
 		64B5B5BF28FBAF180065558F /* RandomPinGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B5B5BE28FBAF180065558F /* RandomPinGenerator.swift */; };
@@ -119,6 +136,19 @@
 		64134BD728F6629C00009C61 /* ABWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABWeek.swift; sourceTree = "<group>"; };
 		64134BD928F7B42600009C61 /* ScheduleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCard.swift; sourceTree = "<group>"; };
 		6438CF8C2908DBBA00732FDD /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		64471D13290EF01100F09C58 /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		64471D16290F64F100F09C58 /* ProgramsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramsView.swift; sourceTree = "<group>"; };
+		64471D18290F66C500F09C58 /* ProgramsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramsViewModel.swift; sourceTree = "<group>"; };
+		64471D1B290F70D100F09C58 /* ToastModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastModifier.swift; sourceTree = "<group>"; };
+		64471D1D290F71A300F09C58 /* Extension+View.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+View.swift"; sourceTree = "<group>"; };
+		64471D1F290F722600F09C58 /* CalendarModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarModifier.swift; sourceTree = "<group>"; };
+		64471D21290F803000F09C58 /* Extension+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Date.swift"; sourceTree = "<group>"; };
+		64471D2629102CE000F09C58 /* ProgramDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramDetailView.swift; sourceTree = "<group>"; };
+		64471D2829102D7800F09C58 /* ProgramDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramDetailViewModel.swift; sourceTree = "<group>"; };
+		64471D2A29102F2A00F09C58 /* PartRowCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartRowCell.swift; sourceTree = "<group>"; };
+		64471D2D291037DD00F09C58 /* PartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartView.swift; sourceTree = "<group>"; };
+		64471D2F291037EC00F09C58 /* PartViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartViewModel.swift; sourceTree = "<group>"; };
+		64471D32291051C600F09C58 /* PublisherRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherRepository.swift; sourceTree = "<group>"; };
 		645A488728F96BD700FD1228 /* MeetingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingCard.swift; sourceTree = "<group>"; };
 		645A488928F96C0B00FD1228 /* constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = constants.swift; sourceTree = "<group>"; };
 		645A488C28F96F1500FD1228 /* ABTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABTabView.swift; sourceTree = "<group>"; };
@@ -138,6 +168,8 @@
 		6486AD1F2907AF4400F37694 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		6486AD212907B06700F37694 /* CloudKitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitHelper.swift; sourceTree = "<group>"; };
 		64B4C7AB290DF15000FA232E /* CongregationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongregationRepository.swift; sourceTree = "<group>"; };
+		64B4C7B0290E145400FA232E /* LogManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogManager.swift; sourceTree = "<group>"; };
+		64B4C7B2290E148200FA232E /* ToastItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastItem.swift; sourceTree = "<group>"; };
 		64B5B5B928FBA7140065558F /* CongregationSignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongregationSignInView.swift; sourceTree = "<group>"; };
 		64B5B5BB28FBA7450065558F /* CongregationSignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongregationSignInViewModel.swift; sourceTree = "<group>"; };
 		64B5B5BD28FBAD720065558F /* Assemblee.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Assemblee.entitlements; sourceTree = "<group>"; };
@@ -152,12 +184,14 @@
 				64134B9428F39D1B00009C61 /* FirebaseDatabaseSwift in Frameworks */,
 				64134BC928F61DA300009C61 /* RealmSwift in Frameworks */,
 				64134B9A28F39D1B00009C61 /* FirebaseFirestoreCombine-Community in Frameworks */,
+				64B4C7AF290E143A00FA232E /* AlertToast in Frameworks */,
 				64134B8C28F39D1B00009C61 /* FirebaseAppCheck in Frameworks */,
 				64134B9028F39D1B00009C61 /* FirebaseAuthCombine-Community in Frameworks */,
 				64134B9228F39D1B00009C61 /* FirebaseDatabase in Frameworks */,
 				64134B8E28F39D1B00009C61 /* FirebaseAuth in Frameworks */,
 				64134BCC28F62A5E00009C61 /* FirebaseMessaging in Frameworks */,
 				64134B9628F39D1B00009C61 /* FirebaseDynamicLinks in Frameworks */,
+				64471D25291020CE00F09C58 /* CodableFirebase in Frameworks */,
 				64134B9828F39D1B00009C61 /* FirebaseFirestore in Frameworks */,
 				64F61D5328F8659E00E5EB2D /* SwiftDate in Frameworks */,
 				64134B9C28F39D1B00009C61 /* FirebaseFirestoreSwift in Frameworks */,
@@ -186,6 +220,7 @@
 		64134B5228F39C1A00009C61 = {
 			isa = PBXGroup;
 			children = (
+				64471D1A290F70BA00F09C58 /* Modifiers */,
 				64134BB928F3B1AA00009C61 /* Models */,
 				64134BB628F3B16900009C61 /* Repositories */,
 				64134BB028F3B02100009C61 /* Extensions */,
@@ -263,6 +298,7 @@
 				645A488728F96BD700FD1228 /* MeetingCard.swift */,
 				645A489328F97C2600FD1228 /* SchedulePart.swift */,
 				645A489B28F97FC400FD1228 /* SectionTitle.swift */,
+				64471D2A29102F2A00F09C58 /* PartRowCell.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -275,6 +311,7 @@
 				64B5B5BE28FBAF180065558F /* RandomPinGenerator.swift */,
 				6486AD1F2907AF4400F37694 /* RealmManager.swift */,
 				6486AD212907B06700F37694 /* CloudKitHelper.swift */,
+				64B4C7B0290E145400FA232E /* LogManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -282,6 +319,9 @@
 		64134BAA28F3A47000009C61 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				64471D312910381000F09C58 /* Calendar */,
+				64471D2C291037CD00F09C58 /* Parts */,
+				64471D15290F64A400F09C58 /* Programs */,
 				64B5B5B828FBA6FA0065558F /* CongregationSignIn */,
 				645A48A028F99EA900FD1228 /* Setup */,
 				645A489D28F98F6600FD1228 /* User */,
@@ -306,6 +346,8 @@
 			isa = PBXGroup;
 			children = (
 				64134BB128F3B03400009C61 /* Extension.swift */,
+				64471D1D290F71A300F09C58 /* Extension+View.swift */,
+				64471D21290F803000F09C58 /* Extension+Date.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -324,6 +366,7 @@
 				64134BD328F661D400009C61 /* PartRepository.swift */,
 				64134BD528F6624B00009C61 /* WeekRepository.swift */,
 				64B4C7AB290DF15000FA232E /* CongregationRepository.swift */,
+				64471D32291051C600F09C58 /* PublisherRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -338,6 +381,7 @@
 				645A489728F97E5D00FD1228 /* ABEnums.swift */,
 				645A489928F97F1600FD1228 /* ABPublisher.swift */,
 				645A48AC28FA104D00FD1228 /* ABLocalSearch.swift */,
+				64B4C7B2290E148200FA232E /* ToastItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -358,12 +402,49 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		64471D15290F64A400F09C58 /* Programs */ = {
+			isa = PBXGroup;
+			children = (
+				64471D16290F64F100F09C58 /* ProgramsView.swift */,
+				64471D18290F66C500F09C58 /* ProgramsViewModel.swift */,
+				64471D2629102CE000F09C58 /* ProgramDetailView.swift */,
+				64471D2829102D7800F09C58 /* ProgramDetailViewModel.swift */,
+			);
+			path = Programs;
+			sourceTree = "<group>";
+		};
+		64471D1A290F70BA00F09C58 /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				64471D1B290F70D100F09C58 /* ToastModifier.swift */,
+				64471D1F290F722600F09C58 /* CalendarModifier.swift */,
+			);
+			path = Modifiers;
+			sourceTree = "<group>";
+		};
+		64471D2C291037CD00F09C58 /* Parts */ = {
+			isa = PBXGroup;
+			children = (
+				64471D2D291037DD00F09C58 /* PartView.swift */,
+				64471D2F291037EC00F09C58 /* PartViewModel.swift */,
+			);
+			path = Parts;
+			sourceTree = "<group>";
+		};
+		64471D312910381000F09C58 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				6438CF8C2908DBBA00732FDD /* CalendarView.swift */,
+				64471D13290EF01100F09C58 /* CalendarViewModel.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
 		645A488E28F979DC00FD1228 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
 				645A488F28F97A0100FD1228 /* ScheduleView.swift */,
 				645A489128F97A9200FD1228 /* ScheduleViewModel.swift */,
-				6438CF8C2908DBBA00732FDD /* CalendarView.swift */,
 			);
 			path = Schedule;
 			sourceTree = "<group>";
@@ -425,6 +506,8 @@
 				64134BCB28F62A5E00009C61 /* FirebaseMessaging */,
 				64F61D5228F8659E00E5EB2D /* SwiftDate */,
 				645A48A828F9EB7A00FD1228 /* CongregationServiceKit */,
+				64B4C7AE290E143A00FA232E /* AlertToast */,
+				64471D24291020CE00F09C58 /* CodableFirebase */,
 			);
 			productName = Assemblee;
 			productReference = 64134B5B28F39C1A00009C61 /* Assemblee.app */;
@@ -504,6 +587,8 @@
 				64134BC528F61DA200009C61 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				64F61D5128F8659E00E5EB2D /* XCRemoteSwiftPackageReference "SwiftDate" */,
 				645A48A528F9B1CB00FD1228 /* XCRemoteSwiftPackageReference "CongregationServiceKit" */,
+				64B4C7AD290E143A00FA232E /* XCRemoteSwiftPackageReference "AlertToast" */,
+				64471D23291020CE00F09C58 /* XCRemoteSwiftPackageReference "CodableFirebase" */,
 			);
 			productRefGroup = 64134B5C28F39C1A00009C61 /* Products */;
 			projectDirPath = "";
@@ -549,6 +634,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				64134B6128F39C1A00009C61 /* ContentView.swift in Sources */,
+				64471D19290F66C500F09C58 /* ProgramsViewModel.swift in Sources */,
 				64134B5F28F39C1A00009C61 /* AssembleeApp.swift in Sources */,
 				64134BB828F3B17900009C61 /* UserRepository.swift in Sources */,
 				645A489828F97E5D00FD1228 /* ABEnums.swift in Sources */,
@@ -556,13 +642,18 @@
 				64134BBB28F3B1C600009C61 /* ABUser.swift in Sources */,
 				64B5B5BC28FBA7450065558F /* CongregationSignInViewModel.swift in Sources */,
 				645A489028F97A0100FD1228 /* ScheduleView.swift in Sources */,
+				64471D33291051C600F09C58 /* PublisherRepository.swift in Sources */,
 				6438CF8D2908DBBA00732FDD /* CalendarView.swift in Sources */,
+				64471D20290F722600F09C58 /* CalendarModifier.swift in Sources */,
+				64B4C7B1290E145400FA232E /* LogManager.swift in Sources */,
 				64134BC428F4AFB800009C61 /* HeaderScrollView.swift in Sources */,
 				64134BB228F3B03400009C61 /* Extension.swift in Sources */,
 				64134BD628F6624B00009C61 /* WeekRepository.swift in Sources */,
 				64134BAF28F3A61600009C61 /* SignInViewModel.swift in Sources */,
 				64134BA328F39D4600009C61 /* LabelTextField.swift in Sources */,
+				64471D30291037EC00F09C58 /* PartViewModel.swift in Sources */,
 				645A489A28F97F1600FD1228 /* ABPublisher.swift in Sources */,
+				64471D1E290F71A300F09C58 /* Extension+View.swift in Sources */,
 				645A48A428F9A10D00FD1228 /* SetupViewModel.swift in Sources */,
 				64134BB528F3B0EC00009C61 /* AssembleeAppState.swift in Sources */,
 				64134BBD28F3B56600009C61 /* ABCongregation.swift in Sources */,
@@ -571,6 +662,7 @@
 				64134BA928F3A2A000009C61 /* AuthenticationService.swift in Sources */,
 				645A48AB28FA102100FD1228 /* LocationManager.swift in Sources */,
 				64134BD228F661A500009C61 /* TodayViewModel.swift in Sources */,
+				64471D14290EF01100F09C58 /* CalendarViewModel.swift in Sources */,
 				64134BD828F6629C00009C61 /* ABWeek.swift in Sources */,
 				645A488A28F96C0B00FD1228 /* constants.swift in Sources */,
 				64B5B5BF28FBAF180065558F /* RandomPinGenerator.swift in Sources */,
@@ -579,11 +671,19 @@
 				645A488D28F96F1500FD1228 /* ABTabView.swift in Sources */,
 				645A48A228F99EB600FD1228 /* SetupView.swift in Sources */,
 				645A489428F97C2600FD1228 /* SchedulePart.swift in Sources */,
+				64471D2E291037DD00F09C58 /* PartView.swift in Sources */,
 				64B4C7AC290DF15000FA232E /* CongregationRepository.swift in Sources */,
+				64B4C7B3290E148200FA232E /* ToastItem.swift in Sources */,
 				64B5B5BA28FBA7140065558F /* CongregationSignInView.swift in Sources */,
+				64471D2B29102F2A00F09C58 /* PartRowCell.swift in Sources */,
+				64471D22290F803000F09C58 /* Extension+Date.swift in Sources */,
+				64471D2729102CE000F09C58 /* ProgramDetailView.swift in Sources */,
 				645A489628F97C5A00FD1228 /* ABPart.swift in Sources */,
 				645A488828F96BD700FD1228 /* MeetingCard.swift in Sources */,
 				64134BC228F42E6F00009C61 /* ObservableScrollView.swift in Sources */,
+				64471D2929102D7800F09C58 /* ProgramDetailViewModel.swift in Sources */,
+				64471D1C290F70D100F09C58 /* ToastModifier.swift in Sources */,
+				64471D17290F64F100F09C58 /* ProgramsView.swift in Sources */,
 				64134BDA28F7B42600009C61 /* ScheduleCard.swift in Sources */,
 				64134BC028F3BA5E00009C61 /* TodayView.swift in Sources */,
 				645A489F28F98FED00FD1228 /* UserView.swift in Sources */,
@@ -962,9 +1062,25 @@
 				minimumVersion = 10.32.0;
 			};
 		};
+		64471D23291020CE00F09C58 /* XCRemoteSwiftPackageReference "CodableFirebase" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/alickbass/CodableFirebase";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.2;
+			};
+		};
 		645A48A528F9B1CB00FD1228 /* XCRemoteSwiftPackageReference "CongregationServiceKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Mannydefreitas7/CongregationServiceKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+		64B4C7AD290E143A00FA232E /* XCRemoteSwiftPackageReference "AlertToast" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/elai950/AlertToast.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 1.0.0;
@@ -1041,10 +1157,20 @@
 			package = 64134B8A28F39D1B00009C61 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
 		};
+		64471D24291020CE00F09C58 /* CodableFirebase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 64471D23291020CE00F09C58 /* XCRemoteSwiftPackageReference "CodableFirebase" */;
+			productName = CodableFirebase;
+		};
 		645A48A828F9EB7A00FD1228 /* CongregationServiceKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 645A48A528F9B1CB00FD1228 /* XCRemoteSwiftPackageReference "CongregationServiceKit" */;
 			productName = CongregationServiceKit;
+		};
+		64B4C7AE290E143A00FA232E /* AlertToast */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 64B4C7AD290E143A00FA232E /* XCRemoteSwiftPackageReference "AlertToast" */;
+			productName = AlertToast;
 		};
 		64F61D5228F8659E00E5EB2D /* SwiftDate */ = {
 			isa = XCSwiftPackageProductDependency;

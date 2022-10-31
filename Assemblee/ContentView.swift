@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Firebase
+import AlertToast
 
 struct ContentView: View {
     
@@ -16,6 +17,7 @@ struct ContentView: View {
     var body: some View {
         Group {
             contentFlow()
+                .toastAlert(logManager: appState.logManager)
         }
         .onOpenURL { url in   // 2
             let link = url.absoluteString
@@ -27,18 +29,14 @@ struct ContentView: View {
                 }
             }
         }
+ 
     }
     
     @ViewBuilder func contentFlow() -> some View {
             if let _ = appState.currentUser {
                 ABTabView()
                     .environmentObject(appState)
-                    .sheet(isPresented: $appState.showAddSchedule) {
-                        VStack {
-                            CalendarView()
-                        }
-                        .presentationDetents([.medium])
-                    }
+
             } else {
                 CongregationSignInView()
                     .environmentObject(appState)
@@ -49,17 +47,8 @@ struct ContentView: View {
         do {
             return try await Auth.auth().signIn(withEmail: email, link: link)
         } catch {
-            print("ⓧ Authentication error: \(error.localizedDescription).")
+            appState.logManager.displayError(title: error.localizedDescription)
             return nil
         }
-      }
+    }
 }
-
-
-/// Model object for an `Alert` view.
-struct AlertItem: Identifiable {    // *
-  var id = UUID()
-  var title: String
-  var message: String
-}
-

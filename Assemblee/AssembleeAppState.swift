@@ -17,13 +17,15 @@ class AssembleeAppState: ObservableObject {
     @Published var authenticationService = AuthenticationService()
     @Published var userRepository = UserRepository()
     @Published var congregationRepository = CongregationRepository()
+    @Published var logManager = LogManager()
     @Published var currentUser: ABUser?
     @Published var congregation: ABCongregation?
-    @Published var user: RMUser?
     @Published var userId: String?
     @Published var isAuthenticated: Bool = false
     @Published var showAddSchedule: Bool = false
     @Published var showSetup: Bool = false
+    @Published var showToast: Bool = false
+    @Published var toastItem: ToastItem = ToastItem(id: UUID().uuidString, type: .info)
     var observer: NSKeyValueObservation?
     
     init() {
@@ -56,6 +58,11 @@ class AssembleeAppState: ObservableObject {
         authenticationService.$isAuthenticated
             .assign(to: \.isAuthenticated, on: self)
             .store(in: &cancellables)
+        
+        authenticationService.$logManager
+            .assign(to: \.logManager, on: self)
+            .store(in: &cancellables)
+
        
         UserDefaults.standard
             .publisher(for: \.user)
@@ -65,9 +72,6 @@ class AssembleeAppState: ObservableObject {
         
     }
     
-    deinit {
-        
-    }
     
     func signInAnonymously() async {
         do {
@@ -109,7 +113,7 @@ class AssembleeAppState: ObservableObject {
     
     func signOut() {
         authenticationService.signOut()
-        currentUser = nil
+        self.currentUser = nil
     }
     
 }
