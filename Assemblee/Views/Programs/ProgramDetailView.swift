@@ -30,32 +30,75 @@ struct ProgramDetailView: View {
             Divider()
             
             List {
-                
-                chairmanSection()
-                treasuresSection()
-                applySection()
-                lifeSection()
-                secondarySection()
-                prayerEndSection()
+                if viewModel.view == .midweek {
+                    
+                    chairmanSection(for: 0)
+                    prayerSection(for: 0)
+                    treasuresSection()
+                    applySection()
+                    lifeSection()
+                    
+                    secondarySection()
+                    prayerSection(for: 1)
+                    
+                } else if viewModel.view == .weekend {
+                    
+                    chairmanSection(for: 1)
+                    prayerSection(for: 2)
+                    
+                    talkSection()
+                    watchtowerSection()
+                    
+                    prayerSection(for: 3)
+                    
+                }
+    
             }
+            .background(Color(.secondarySystemGroupedBackground))
+            .navigationDestination(for: PartViewModel.self) { PartView(viewModel: $0) }
         }
-            
             .navigationTitle(viewModel.range)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: ToolbarItemPlacement.status) {
+                ToolbarItem(placement: ToolbarItemPlacement.confirmationAction) {
+                    Menu {
+                        
+                        Button {
+                            //
+                        } label: {
+                            Label("Add Part", systemImage: "doc.badge.plus")
+                        }
+                        
+                        Button(role:.destructive) {
+                            //
+                        } label: {
+                            Label("Delete", systemImage: "trash")
+                        }
+
+                    } label: {
+                        Image(systemName: "ellipsis.circle.fill")
+                            .symbolRenderingMode(.hierarchical)
+                    }
+
                 }
             }
+          
     }
     
     // MARK: Chairman Section
-    @ViewBuilder func chairmanSection() -> some View {
+    @ViewBuilder func chairmanSection(for index: Int) -> some View {
         Section {
-            if viewModel.chairmansViewModel.count > 0 {
-                PartRowCell(partVM:viewModel.chairmansViewModel.first!)
+            if viewModel.chairmansViewModel.count > index {
+                PartRowCell(partVM:viewModel.chairmansViewModel[index])
             }
-            if viewModel.prayersViewModel.count > 0 {
-                PartRowCell(partVM:viewModel.prayersViewModel.first!)
+        }
+    }
+
+    // MARK: Prayer Section
+    @ViewBuilder func prayerSection(for index: Int) -> some View {
+        Section {
+            if viewModel.prayersViewModel.count > index {
+                PartRowCell(partVM:viewModel.prayersViewModel[index])
             }
         }
     }
@@ -104,19 +147,38 @@ struct ProgramDetailView: View {
             }
         }
     }
-    // MARK: Prayer end section
-    @ViewBuilder func prayerEndSection() -> some View {
-        if viewModel.prayersViewModel.count > 1 {
-            PartRowCell(partVM:viewModel.prayersViewModel[1])
+    
+    // MARK: Secondary section
+    @ViewBuilder func secondarySection() -> some View {
+        Section(header: Text(STRING_SECONDARY)
+                    .foregroundColor(Color.secondary)
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
+        ) {
+            ForEach(viewModel.secondaryViewModel, id: \.identifier) { PartRowCell(partVM: $0)}
         }
     }
     
-    @ViewBuilder func secondarySection() -> some View {
-        Section(header: Text(STRING_SECONDARY)
-            .foregroundColor(Color.secondary)
+    // MARK: Talk
+    @ViewBuilder func talkSection() -> some View {
+        Section(header: Text("Public Talk")
+                    .foregroundColor(Color.secondary)
                     .font(.system(size: 18, weight: .bold, design: .rounded))
         ) {
-            ForEach(viewModel.secondaryViewModel, id: \.identifier) { PartRowCell(partVM: $0) }
+            if let talkViewModel = viewModel.talkViewModel {
+                PartRowCell(partVM: talkViewModel)
+            }
+        }
+    }
+    
+    // MARK: Watchtower
+    @ViewBuilder func watchtowerSection() -> some View {
+        Section(header: Text("Watchtower")
+                    .foregroundColor(Color.secondary)
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
+        ) {
+            if let watchtowerViewModel = viewModel.watchtowerViewModel {
+                PartRowCell(partVM: watchtowerViewModel)
+            }
         }
     }
 }

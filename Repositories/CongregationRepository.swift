@@ -41,11 +41,10 @@ class CongregationRepository: ObservableObject {
         return nil
     }
     
-    func add(_ congregation: ABCongregation) async throws -> String {
+    func add(_ congregation: ABCongregation) async throws {
         let data = try encoder.encode(congregation)
         try await firestore.document("congregations/\(congregation.id)").setData(data, merge: true)
         self.congregation = congregation
-        return congregation.id
     }
     
 }

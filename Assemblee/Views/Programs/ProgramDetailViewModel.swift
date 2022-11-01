@@ -57,7 +57,7 @@ class ProgramDetailViewModel: ObservableObject {
         partRepository.$prayers
             .map { parts in
                 parts
-                    .map { PartViewModel(part: $0) }
+                    .map { PartViewModel(part: $0, week: week) }
             }
             .assign(to: \.prayersViewModel, on: self)
             .store(in: &cancellables)
@@ -65,7 +65,7 @@ class ProgramDetailViewModel: ObservableObject {
         // MARK: Chairmans
         partRepository.$chairmans
           .map { parts in
-              parts.map { PartViewModel(part: $0) }
+              parts.map { PartViewModel(part: $0, week: week) }
           }
           .assign(to: \.chairmansViewModel, on: self)
           .store(in: &cancellables)
@@ -73,7 +73,7 @@ class ProgramDetailViewModel: ObservableObject {
         // MARK: Treasures
         partRepository.$treasures
             .map { parts in
-                parts.map { PartViewModel(part: $0) }
+                parts.map { PartViewModel(part: $0, week: week) }
             }
             .assign(to: \.treasuresViewModel, on: self)
             .store(in: &cancellables)
@@ -81,7 +81,7 @@ class ProgramDetailViewModel: ObservableObject {
         // MARK: Apply
         partRepository.$apply
             .map { parts in
-                parts.map { PartViewModel(part: $0) }
+                parts.map { PartViewModel(part: $0, week: week) }
             }
             .assign(to: \.applyViewModel, on: self)
             .store(in: &cancellables)
@@ -89,7 +89,7 @@ class ProgramDetailViewModel: ObservableObject {
         // MARK: Living
         partRepository.$life
             .map { parts in
-                parts.map { PartViewModel(part: $0) }
+                parts.map { PartViewModel(part: $0, week: week) }
             }
             .assign(to: \.lifeViewModel, on: self)
             .store(in: &cancellables)
@@ -97,10 +97,25 @@ class ProgramDetailViewModel: ObservableObject {
         // MARK: Secondary
         partRepository.$secondary
             .map { parts in
-                parts.map { PartViewModel(part: $0) }
+                parts.map { PartViewModel(part: $0, week: week) }
             }
             .assign(to: \.secondaryViewModel, on: self)
             .store(in: &cancellables)
+        
+        // MARK: Public talk
+        partRepository.$talk
+            .compactMap { $0.first }
+            .map { PartViewModel(part: $0, week: week) }
+            .assign(to: \.talkViewModel, on: self)
+            .store(in: &cancellables)
+        
+        // MARK: Watchtower
+        partRepository.$watchtower
+            .compactMap { $0.first }
+            .map { PartViewModel(part: $0, week: week) }
+            .assign(to: \.watchtowerViewModel, on: self)
+            .store(in: &cancellables)
+
         
     }
     
@@ -125,6 +140,7 @@ class ProgramDetailViewModel: ObservableObject {
             }
         }
     }
+
     
 }
 

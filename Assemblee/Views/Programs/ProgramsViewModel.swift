@@ -16,6 +16,7 @@ class ProgramsViewModel: ObservableObject {
     @Published var weeks: [ABWeek] = [ABWeek]()
     @Published var appState = AssembleeAppState()
     @Published var logManager = LogManager()
+    @Published var congregation: ABCongregation?
     @Published var showAddScheduleSheet: Bool = false
     
     private var cancellables = Set<AnyCancellable>()
@@ -31,7 +32,22 @@ class ProgramsViewModel: ObservableObject {
     
     init() {
         
-        appState.$congregation
+//        appState.$congregation
+//            .compactMap { $0 }
+//            .sink { congregation in
+//                Task {
+//                    await self.fetchWeeks(congregation)
+//                }
+//            }
+//            .store(in: &cancellables)
+        
+        UserDefaults.standard.data(forKey: "congregation").publisher
+            .map { self.fetchCongregation(from: $0) }
+            .compactMap { $0 }
+            .assign(to: \.congregation, on: self)
+            .store(in: &cancellables)
+        
+        $congregation
             .compactMap { $0 }
             .sink { congregation in
                 Task {
@@ -39,6 +55,7 @@ class ProgramsViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+        
         
         weekRepository.$weeks
             .map { self.getAllMonths(weeks: $0).sorted { $0 < $1 } }
@@ -57,8 +74,28 @@ class ProgramsViewModel: ObservableObject {
         do {
             try weekRepository.listen(for: congregation)
         } catch {
-            logManager.displayError(title: error.localizedDescription)
+            logManager.display(.error, title: "Error", message: error.localizedDescription)
         }
+    }
+    
+    func togglePin(week: ABWeek) async {
+        if let congregation {
+            do {
+                try await weekRepository.togglePin(week, congregation: congregation)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    
+    func fetchCongregation(from data: Data) -> ABCongregation? {
+        do {
+            let _congregation = try ABCongregation().decodedData(data)
+            return _congregation
+        } catch {
+            print(error.localizedDescription)
+        }
+       return nil
     }
     
    

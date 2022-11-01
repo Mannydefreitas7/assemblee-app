@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CongregationServiceKit
 
 struct ABTabView: View {
 
@@ -19,13 +20,24 @@ struct ABTabView: View {
             .tabItem {
                 Label("Today", systemImage: "calendar")
             }
-            
-            NavigationStack {
-                ProgramsView()
+            if let currentUser = appState.currentUser, let permissions = currentUser.permissions, permissions.contains(ABPermission.editor.rawValue) || permissions.contains(ABPermission.admin.rawValue) {
+                
+                NavigationStack {
+                    ProgramsView()
+                }
+                .tabItem {
+                    Label("Programs", systemImage: "chart.bar.doc.horizontal")
+                }
+                
+                NavigationStack {
+                   PublishersView(title: "Publishers")
+                }
+                .tabItem {
+                    Label("Publishers", systemImage: "person.2.fill")
+                }
+                
             }
-            .tabItem {
-                Label("Programs", systemImage: "chart.bar.doc.horizontal")
-            }
+
         }
         .environmentObject(appState)
         

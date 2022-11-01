@@ -15,7 +15,7 @@ struct PartRowCell: View {
     
     var body: some View {
         
-       // NavigationLink(value: partVM) {
+        NavigationLink(value: partVM) {
             if let part = partVM.part {
                 HStack(alignment: .center) {
                     VStack(alignment: .leading) {
@@ -63,7 +63,7 @@ struct PartRowCell: View {
                 .padding(.vertical, 5)
             }
             
-     //   }
+        }
 //        .swipeActions {
 //            if let part = partVM.part, let isConfirmed = part.isConfirmed {
 //                Button {

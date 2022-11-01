@@ -39,6 +39,7 @@ struct ScheduleView: View {
         
             .background(Color(.secondarySystemGroupedBackground))
             .navigationTitle(viewModel.week?.range ?? "")
+            .navigationBarTitleDisplayMode(.inline)
             
         }
         // MARK: Chairman

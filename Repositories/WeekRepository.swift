@@ -68,4 +68,12 @@ class WeekRepository: ObservableObject {
         return (false, nil)
     }
     
+    func togglePin(_ week: ABWeek, congregation: ABCongregation) async throws {
+        if let weekID = week.id {
+            let reference = firestore.document("congregations/\(congregation.id)/weeks/\(weekID)")
+            try await reference.updateData(["isSent": !week.isSent])
+        }
+       
+    }
+    
 }

@@ -17,12 +17,17 @@ class PublisherRepository: ObservableObject {
     private var firestore = Firestore.firestore()
     private var encoder = Firestore.Encoder()
     private var decoder = Firestore.Decoder()
+    var listener: ListenerRegistration?
     
     @Published var publishers: [ABPublisher] = [ABPublisher]()
     
     init() {
-        Task {
-            await self.fetch()
+        self.listen()
+    }
+    
+    deinit {
+        if let listener {
+            listener.remove()
         }
     }
     
@@ -39,6 +44,22 @@ class PublisherRepository: ObservableObject {
         }
     }
     
+    func listen() {
+        if let congregationData = UserDefaults.standard.data(forKey: "congregation"), let congregation = self.fetchCongregation(from: congregationData) {
+               
+            self.listener = firestore.collection("congregations/\(congregation.id)/publishers")
+                .addSnapshotListener { querySnapshot, _ in
+                    do {
+                        if let querySnapshot {
+                            self.publishers = try querySnapshot.documents.map { try $0.data(as: ABPublisher.self) }
+                        }
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
+        }
+    }
+    
     func fetchCongregation(from data: Data) -> ABCongregation? {
         do {
             let _congregation = try ABCongregation().decodedData(data)
@@ -49,14 +70,8 @@ class PublisherRepository: ObservableObject {
         return nil
     }
     
-    func add(_ publisher: ABPublisher) async throws {
+    func add(_ publisher: ABPublisher, congregationID: String) async throws {
         let data = try encoder.encode(publisher)
-        if let congregationData = UserDefaults.standard.data(forKey: "congregation"), let congregation = self.fetchCongregation(from: congregationData) {
-            try await firestore.document("congregations/\(congregation.id)/publishers/\(publisher.id)").setData(data, merge: true)
-        } else {
-            if let id = publisher.congregation {
-                try await firestore.document("congregations/\(id)/publishers/\(publisher.id)").setData(data, merge: true)
-            }
-        }
+            try await firestore.document("congregations/\(congregationID)/publishers/\(publisher.id)").setData(data, merge: true)
     }
 }

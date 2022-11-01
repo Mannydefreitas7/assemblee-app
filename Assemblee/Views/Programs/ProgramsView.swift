@@ -15,7 +15,7 @@ struct ProgramsView: View {
         List {
            ForEach(viewModel.scheduleByMonths, id: \.self) { month in
                Section(header: Text("\(Calendar.current.monthSymbols[month-1])")) {
-                   ForEach(viewModel.weeks.filter { $0.formattedDate.month == month }, id: \.id) { programCell(viewModel: ProgramDetailViewModel(week: $0) )}
+                   ForEach(viewModel.weeks.filter { $0.formattedDate.month == month }, id: \.id) { programCell(vm: ProgramDetailViewModel(week: $0) )}
                    }
                }
         }
@@ -72,6 +72,18 @@ struct ProgramsView: View {
                 }
                 .padding(.vertical, 7)
             })
+            .swipeActions {
+                if let currentUser = appState.currentUser, let permissions = currentUser.permissions, permissions.contains(ABPermission.admin.rawValue) {
+                    Button {
+                        Task {
+                            await viewModel.togglePin(week:week)
+                        }
+                    } label: {
+                        Label(week.isSent ? "Unpin" : "Pin", systemImage: week.isSent ? "pin.slash" : "pin")
+                    }
+                    .tint(week.isSent ? .yellow : .green)
+                }
+            }
 //            .swipeActions {
 //                if let currentUser = appViewModel.currentUser, let permissions = currentUser.publisher.permissions, permissions.contains(Permission.admin.rawValue) {
 //                    Button {
@@ -102,8 +114,8 @@ struct ProgramsView: View {
 
     }
     
-    @ViewBuilder func programCell(viewModel: ProgramDetailViewModel) -> some View {
-        NavigationLink(value: viewModel) {
+    @ViewBuilder func programCell(vm: ProgramDetailViewModel) -> some View {
+        NavigationLink(value: vm) {
             HStack {
                 Image(systemName: "chart.bar.doc.horizontal")
                     .imageScale(.large)
@@ -116,7 +128,7 @@ struct ProgramsView: View {
                         .font(.caption)
                         .font(.system(.caption, design: .rounded))
                         .foregroundColor(Color(.systemGray))
-                    Text(viewModel.week?.range ?? "")
+                    Text(vm.week?.range ?? "")
                         .font(.body)
                         .font(.system(.body, design: .rounded))
                         .fontWeight(.semibold)
@@ -124,7 +136,7 @@ struct ProgramsView: View {
                         .lineLimit(2)
                 }
                 Spacer()
-                if let week = viewModel.week, week.isSent {
+                if let week = vm.week, week.isSent {
                     Image(systemName: "pin.circle")
                         .foregroundStyle(Color.accentColor)
                         
@@ -132,6 +144,18 @@ struct ProgramsView: View {
                 }
             }
             .padding(.vertical, 7)
+        }
+        .swipeActions {
+            if let week = vm.week, let currentUser = appState.currentUser, let permissions = currentUser.permissions, permissions.contains(ABPermission.admin.rawValue) {
+                Button {
+                    Task {
+                        await viewModel.togglePin(week:week)
+                    }
+                } label: {
+                    Label(week.isSent ? "Unpin" : "Pin", systemImage: week.isSent ? "pin.slash" : "pin")
+                }
+                .tint(week.isSent ? .yellow : .green)
+            }
         }
     }
 }

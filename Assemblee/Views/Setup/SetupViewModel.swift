@@ -27,6 +27,7 @@ final class SetupViewModel: ObservableObject {
     @Published var authenticationService = AuthenticationService()
     private var congregationRepository = CongregationRepository()
     private var publisherRepository = PublisherRepository()
+    private var congregationID = UUID().uuidString
     @Published var languages: [WOLLanguage] = [WOLLanguage]()
     
     @Published var page: PageType = .welcome
@@ -198,6 +199,7 @@ final class SetupViewModel: ObservableObject {
      }
     
     func selectCongregation(from congregationList: GeoLocationList) {
+        self.congregation.id = congregationID
         self.congregation.language = language
         self.congregation.passcode = randomCodeGenerator.generate(for: .congregation)
         self.congregation.properties = congregationList.properties
@@ -240,8 +242,9 @@ final class SetupViewModel: ObservableObject {
     func addCongregation() async {
         do {
             congregation.language = language
-            congregation.id = UUID().uuidString
-            self.newUser.congregationId = try await self.congregationRepository.add(congregation)
+            congregation.id = congregationID
+            self.newUser.congregationId = congregationID
+            try await self.congregationRepository.add(congregation)
         } catch {
             logManager.display(.error, title: "Error", message: error.localizedDescription)
         }
@@ -252,12 +255,12 @@ final class SetupViewModel: ObservableObject {
             var publisher: ABPublisher = ABPublisher.newPublisher()
             publisher.userId = newUser.id
             publisher.email = newUser.email
-            publisher.congregation = newUser.congregation
+            publisher.congregation = congregationID
             publisher.firstName = newUser.firstName
             publisher.lastName = newUser.lastName
             publisher.code = randomCodeGenerator.generate(for: .publisher)
             
-            try await publisherRepository.add(publisher)
+            try await publisherRepository.add(publisher, congregationID: congregationID)
         } catch {
             logManager.display(.error, title: "Error", message: error.localizedDescription)
         }
@@ -275,6 +278,7 @@ final class SetupViewModel: ObservableObject {
             
             if let provider = newUser.provider, provider == "apple.com", let user = authenticationService.user {
                 await self.addCongregation()
+                await self.addPublisher()
                 newUser.permissions = [ABPermission.admin.rawValue]
                 await appState.createUserFrom(user, newUser: newUser)
                 self.isLoading = false
