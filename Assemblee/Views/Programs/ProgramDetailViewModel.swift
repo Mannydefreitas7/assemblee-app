@@ -134,7 +134,8 @@ class ProgramDetailViewModel: ObservableObject {
     func fetch() async {
         if let congregation, let week, let weekID = week.id {
             do {
-                try await partRepository.fetchParts(weekID, congregation: congregation.id)
+              //  try await partRepository.fetchParts(weekID, congregation: congregation.id)
+                partRepository.listen(weekID, congregationID: congregation.id)
             } catch {
                 print(error.localizedDescription)
             }

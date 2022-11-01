@@ -31,7 +31,7 @@ final class PartRepository: ObservableObject {
     @Published var weekendExists: Bool = false
     
     var listener: ListenerRegistration?
-    
+
     deinit {
         if let listener {
             listener.remove()
@@ -74,6 +74,8 @@ final class PartRepository: ObservableObject {
         }
     }
     
+    
+//
     func listen(_ weekID: String, congregationID: String) {
         self.listener = firestore.collection("congregations/\(congregationID)/weeks/\(weekID)/parts")
             .addSnapshotListener { querySnapshot, error in
@@ -94,6 +96,19 @@ final class PartRepository: ObservableObject {
                         print(error.localizedDescription)
                     }
             }
+        }
+    }
+    
+    func selectParticipant(_ part: ABPart, for week: ABWeek, in congregationID: String) async throws {
+        if let weekID = week.id, let partID = part.id {
+            let data = try encoder.encode(part)
+            _ = try await firestore.document("congregations/\(congregationID)/weeks/\(weekID)/parts/\(partID)").setData(data, merge: true)
+        }
+    }
+    
+    func toggle(_ part: ABPart, for week: ABWeek, in congregationID: String, key: String, value: Bool) async throws {
+        if let weekID = week.id, let partID = part.id {
+            _ = try await firestore.document("congregations/\(congregationID)/weeks/\(weekID)/parts/\(partID)").updateData([key:value])
         }
     }
     

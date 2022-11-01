@@ -39,7 +39,11 @@ final class ScheduleViewModel: ObservableObject {
                         print(error.localizedDescription)
                     }
                 }
+                
+               // partRepository.listen(id, congregationID: congregation.id)
             }
+        
+            
         
 
             // MARK: Prayers

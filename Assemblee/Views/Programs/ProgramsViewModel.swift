@@ -32,15 +32,6 @@ class ProgramsViewModel: ObservableObject {
     
     init() {
         
-//        appState.$congregation
-//            .compactMap { $0 }
-//            .sink { congregation in
-//                Task {
-//                    await self.fetchWeeks(congregation)
-//                }
-//            }
-//            .store(in: &cancellables)
-        
         UserDefaults.standard.data(forKey: "congregation").publisher
             .map { self.fetchCongregation(from: $0) }
             .compactMap { $0 }

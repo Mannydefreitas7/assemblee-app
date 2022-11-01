@@ -30,7 +30,7 @@ struct ABTabView: View {
                 }
                 
                 NavigationStack {
-                   PublishersView(title: "Publishers")
+                    PublishersView { _ in }
                 }
                 .tabItem {
                     Label("Publishers", systemImage: "person.2.fill")

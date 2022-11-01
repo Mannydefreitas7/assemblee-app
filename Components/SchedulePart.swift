@@ -18,22 +18,25 @@ struct SchedulePart: View {
             if let title = part.title {
                 Text(title)
                     .multilineTextAlignment(.leading)
-                    .padding(.bottom)
+                    .padding(.bottom, 5)
             }
             
-            if let assignee = part.assignee, let firstName = assignee.firstName, let lastName = assignee.lastName {
-                Text("\(firstName) \(lastName)")
-                    .font(.title3)
-                    .fontWeight(.bold)
-                    
+            VStack(alignment: .leading) {
+                if let assignee = part.assignee, let firstName = assignee.firstName, let lastName = assignee.lastName {
+                    Text("\(firstName) \(lastName)")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        
+                }
+                
+                if let assistant = part.assistant, let firstName = assistant.firstName, let lastName = assistant.lastName {
+                    Text("\(firstName) \(lastName)")
+                        .foregroundColor(.secondary)
+                        .font(.title3)
+                }
             }
-            
-            if let assistant = part.assistant, let firstName = assistant.firstName, let lastName = assistant.lastName {
-                Text("\(firstName) \(lastName)")
-                    .foregroundColor(Color(.secondaryLabel))
-                    .font(.title3)
-            }
-            
+            .padding(.leading)
+            .padding(.bottom, 5)
         }
     }
 }

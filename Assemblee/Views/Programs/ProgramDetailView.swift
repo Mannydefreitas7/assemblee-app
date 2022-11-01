@@ -55,7 +55,9 @@ struct ProgramDetailView: View {
     
             }
             .background(Color(.secondarySystemGroupedBackground))
-            .navigationDestination(for: PartViewModel.self) { PartView(viewModel: $0) }
+            .navigationDestination(for: PartViewModel.self) { partViewModel in
+                PartView(viewModel: partViewModel)
+            }
         }
             .navigationTitle(viewModel.range)
             .navigationBarTitleDisplayMode(.inline)

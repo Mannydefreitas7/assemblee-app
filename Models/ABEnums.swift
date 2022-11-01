@@ -65,9 +65,12 @@ enum ABPrivilege: String {
 let privileges : [ABPrivilege] = [.elder, .assistant, .publisher]
 
 
-enum ABPartPublisherType {
+enum ABPartPublisherType: Int, Identifiable {
     case assignee
     case assistant
+    var id: Int {
+        hashValue
+    }
 }
 
 enum ABAssignmentType {
@@ -91,4 +94,9 @@ enum ABActiveSheet: Identifiable {
     var id: Int {
         hashValue
     }
+}
+
+enum ABPublishersViewType {
+    case list
+    case select
 }

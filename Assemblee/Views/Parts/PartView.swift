@@ -10,6 +10,7 @@ import SwiftUI
 struct PartView: View {
     
     @ObservedObject var viewModel: PartViewModel
+    
     let columns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
     var body: some View {
             VStack(alignment: .leading, spacing: 0) {
@@ -20,8 +21,6 @@ struct PartView: View {
                     if let part = viewModel.part, (part.parent == ABParent.treasures.rawValue && part.index == 2) || part.parent == ABParent.apply.rawValue {
                         gridOptions()
                     }
-                   
-   
                    
                     Section {
                         assigneeRow()
@@ -46,10 +45,22 @@ struct PartView: View {
                     }
                 }
             }
-       
-        
         .background(Color(.secondarySystemGroupedBackground))
         .navigationTitle(viewModel.week?.range ?? "")
+        .sheet(item: $viewModel.showSelectPublisherSheet) { selectPartType in
+            NavigationStack {
+                PublishersView(viewType: .select) { selectedPublisher in
+                    if selectPartType == .assignee {
+                        viewModel.part?.assignee = selectedPublisher
+                    } else {
+                        viewModel.part?.assistant = selectedPublisher
+                    }
+                    Task {
+                        await viewModel.selectParticipant()
+                    }
+                }
+            }
+        }
     }
     
     @ViewBuilder func partTitle() -> some View {
@@ -84,7 +95,7 @@ struct PartView: View {
                 PublisherRowView(publisher: $viewModel.assignee)
             } else {
                 Button {
-                    //
+                    viewModel.showSelectPublisherSheet = .assignee
                 } label: {
                     HStack {
                         Text("Select Assignee")
@@ -106,7 +117,7 @@ struct PartView: View {
                 PublisherRowView(publisher: $viewModel.assistant)
             } else {
                 Button {
-                    //
+                    viewModel.showSelectPublisherSheet = .assistant
                 } label: {
                     HStack {
                         Text("Select Assistant")

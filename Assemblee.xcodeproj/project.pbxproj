@@ -64,6 +64,8 @@
 		64471D372910C8E300F09C58 /* PublisherPartRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D362910C8E300F09C58 /* PublisherPartRow.swift */; };
 		64471D3A2910CAB600F09C58 /* PublishersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D392910CAB600F09C58 /* PublishersView.swift */; };
 		64471D3C2910CB0900F09C58 /* PublishersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D3B2910CB0900F09C58 /* PublishersViewModel.swift */; };
+		64471D3E2911611700F09C58 /* PublisherDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D3D2911611700F09C58 /* PublisherDetailView.swift */; };
+		64471D402911620A00F09C58 /* PublisherDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D3F2911620A00F09C58 /* PublisherDetailViewModel.swift */; };
 		645A488828F96BD700FD1228 /* MeetingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645A488728F96BD700FD1228 /* MeetingCard.swift */; };
 		645A488A28F96C0B00FD1228 /* constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645A488928F96C0B00FD1228 /* constants.swift */; };
 		645A488D28F96F1500FD1228 /* ABTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645A488C28F96F1500FD1228 /* ABTabView.swift */; };
@@ -157,6 +159,8 @@
 		64471D362910C8E300F09C58 /* PublisherPartRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherPartRow.swift; sourceTree = "<group>"; };
 		64471D392910CAB600F09C58 /* PublishersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishersView.swift; sourceTree = "<group>"; };
 		64471D3B2910CB0900F09C58 /* PublishersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishersViewModel.swift; sourceTree = "<group>"; };
+		64471D3D2911611700F09C58 /* PublisherDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherDetailView.swift; sourceTree = "<group>"; };
+		64471D3F2911620A00F09C58 /* PublisherDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherDetailViewModel.swift; sourceTree = "<group>"; };
 		645A488728F96BD700FD1228 /* MeetingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingCard.swift; sourceTree = "<group>"; };
 		645A488928F96C0B00FD1228 /* constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = constants.swift; sourceTree = "<group>"; };
 		645A488C28F96F1500FD1228 /* ABTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABTabView.swift; sourceTree = "<group>"; };
@@ -456,6 +460,8 @@
 			children = (
 				64471D392910CAB600F09C58 /* PublishersView.swift */,
 				64471D3B2910CB0900F09C58 /* PublishersViewModel.swift */,
+				64471D3D2911611700F09C58 /* PublisherDetailView.swift */,
+				64471D3F2911620A00F09C58 /* PublisherDetailViewModel.swift */,
 			);
 			path = Publishers;
 			sourceTree = "<group>";
@@ -664,6 +670,7 @@
 				645A489028F97A0100FD1228 /* ScheduleView.swift in Sources */,
 				64471D33291051C600F09C58 /* PublisherRepository.swift in Sources */,
 				6438CF8D2908DBBA00732FDD /* CalendarView.swift in Sources */,
+				64471D402911620A00F09C58 /* PublisherDetailViewModel.swift in Sources */,
 				64471D20290F722600F09C58 /* CalendarModifier.swift in Sources */,
 				64B4C7B1290E145400FA232E /* LogManager.swift in Sources */,
 				64134BC428F4AFB800009C61 /* HeaderScrollView.swift in Sources */,
@@ -705,6 +712,7 @@
 				64471D352910A9C900F09C58 /* PillView.swift in Sources */,
 				64134BC228F42E6F00009C61 /* ObservableScrollView.swift in Sources */,
 				64471D2929102D7800F09C58 /* ProgramDetailViewModel.swift in Sources */,
+				64471D3E2911611700F09C58 /* PublisherDetailView.swift in Sources */,
 				64471D1C290F70D100F09C58 /* ToastModifier.swift in Sources */,
 				64471D17290F64F100F09C58 /* ProgramsView.swift in Sources */,
 				64134BDA28F7B42600009C61 /* ScheduleCard.swift in Sources */,
