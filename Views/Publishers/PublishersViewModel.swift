@@ -40,12 +40,10 @@ class PublishersViewModel: ObservableObject {
         
         $searchText
             .removeDuplicates()
-            //.debounce(for: .milliseconds(500), scheduler: RunLoop.main)
             .map { search in
                 if search.isEmpty {
                     return []
                 }
-                
                 return self.publishers.filter({ $0.firstName?.lowercased().contains(search.lowercased()) ?? true || $0.lastName?.lowercased().contains(search.lowercased()) ?? true })
             }
             .assign(to: \.publisherSuggestions, on: self)
@@ -63,19 +61,5 @@ class PublishersViewModel: ObservableObject {
         }
        return nil
     }
-    
-//    func searchCompletion(search: String) {
-//        
-//        publisherRepository.$publishers.compactMap { publishers in
-//            if search.isEmpty {
-//                return publishers.map { PublisherDetailViewModel(publisher: $0) }
-//            }
-//            return publishers.filter({ $0.firstName?.lowercased().contains(search.lowercased()) ?? true || $0.lastName?.lowercased().contains(search.lowercased()) ?? true })
-//                .map { PublisherDetailViewModel(publisher: $0) }
-//        }
-//        .assign(to: \.publisherViewModels, on: self)
-//        .store(in: &cancellables)
-//    }
-    
    
 }

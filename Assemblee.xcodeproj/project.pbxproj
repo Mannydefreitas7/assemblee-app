@@ -66,6 +66,8 @@
 		64471D3C2910CB0900F09C58 /* PublishersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D3B2910CB0900F09C58 /* PublishersViewModel.swift */; };
 		64471D3E2911611700F09C58 /* PublisherDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D3D2911611700F09C58 /* PublisherDetailView.swift */; };
 		64471D402911620A00F09C58 /* PublisherDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D3F2911620A00F09C58 /* PublisherDetailViewModel.swift */; };
+		64471D422911E0FE00F09C58 /* Extension+String.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64471D412911E0FE00F09C58 /* Extension+String.swift */; };
+		64471D452911E4F700F09C58 /* PhoneNumberKit in Frameworks */ = {isa = PBXBuildFile; productRef = 64471D442911E4F700F09C58 /* PhoneNumberKit */; };
 		645A488828F96BD700FD1228 /* MeetingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645A488728F96BD700FD1228 /* MeetingCard.swift */; };
 		645A488A28F96C0B00FD1228 /* constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645A488928F96C0B00FD1228 /* constants.swift */; };
 		645A488D28F96F1500FD1228 /* ABTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 645A488C28F96F1500FD1228 /* ABTabView.swift */; };
@@ -161,6 +163,7 @@
 		64471D3B2910CB0900F09C58 /* PublishersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishersViewModel.swift; sourceTree = "<group>"; };
 		64471D3D2911611700F09C58 /* PublisherDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherDetailView.swift; sourceTree = "<group>"; };
 		64471D3F2911620A00F09C58 /* PublisherDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublisherDetailViewModel.swift; sourceTree = "<group>"; };
+		64471D412911E0FE00F09C58 /* Extension+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+String.swift"; sourceTree = "<group>"; };
 		645A488728F96BD700FD1228 /* MeetingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetingCard.swift; sourceTree = "<group>"; };
 		645A488928F96C0B00FD1228 /* constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = constants.swift; sourceTree = "<group>"; };
 		645A488C28F96F1500FD1228 /* ABTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABTabView.swift; sourceTree = "<group>"; };
@@ -208,6 +211,7 @@
 				64F61D5328F8659E00E5EB2D /* SwiftDate in Frameworks */,
 				64134B9C28F39D1B00009C61 /* FirebaseFirestoreSwift in Frameworks */,
 				64134BC728F61DA200009C61 /* Realm in Frameworks */,
+				64471D452911E4F700F09C58 /* PhoneNumberKit in Frameworks */,
 				645A48A928F9EB7A00FD1228 /* CongregationServiceKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -232,6 +236,7 @@
 		64134B5228F39C1A00009C61 = {
 			isa = PBXGroup;
 			children = (
+				64134BAA28F3A47000009C61 /* Views */,
 				64471D1A290F70BA00F09C58 /* Modifiers */,
 				64134BB928F3B1AA00009C61 /* Models */,
 				64134BB628F3B16900009C61 /* Repositories */,
@@ -261,7 +266,6 @@
 			children = (
 				64B5B5BD28FBAD720065558F /* Assemblee.entitlements */,
 				645A48AE28FA12C300FD1228 /* Info.plist */,
-				64134BAA28F3A47000009C61 /* Views */,
 				64134B5E28F39C1A00009C61 /* AssembleeApp.swift */,
 				64134B6028F39C1A00009C61 /* ContentView.swift */,
 				64134B6228F39C1B00009C61 /* Assets.xcassets */,
@@ -363,6 +367,7 @@
 				64134BB128F3B03400009C61 /* Extension.swift */,
 				64471D1D290F71A300F09C58 /* Extension+View.swift */,
 				64471D21290F803000F09C58 /* Extension+Date.swift */,
+				64471D412911E0FE00F09C58 /* Extension+String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -534,6 +539,7 @@
 				645A48A828F9EB7A00FD1228 /* CongregationServiceKit */,
 				64B4C7AE290E143A00FA232E /* AlertToast */,
 				64471D24291020CE00F09C58 /* CodableFirebase */,
+				64471D442911E4F700F09C58 /* PhoneNumberKit */,
 			);
 			productName = Assemblee;
 			productReference = 64134B5B28F39C1A00009C61 /* Assemblee.app */;
@@ -615,6 +621,7 @@
 				645A48A528F9B1CB00FD1228 /* XCRemoteSwiftPackageReference "CongregationServiceKit" */,
 				64B4C7AD290E143A00FA232E /* XCRemoteSwiftPackageReference "AlertToast" */,
 				64471D23291020CE00F09C58 /* XCRemoteSwiftPackageReference "CodableFirebase" */,
+				64471D432911E4F700F09C58 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */,
 			);
 			productRefGroup = 64134B5C28F39C1A00009C61 /* Products */;
 			projectDirPath = "";
@@ -675,6 +682,7 @@
 				64B4C7B1290E145400FA232E /* LogManager.swift in Sources */,
 				64134BC428F4AFB800009C61 /* HeaderScrollView.swift in Sources */,
 				64134BB228F3B03400009C61 /* Extension.swift in Sources */,
+				64471D422911E0FE00F09C58 /* Extension+String.swift in Sources */,
 				64471D3A2910CAB600F09C58 /* PublishersView.swift in Sources */,
 				64134BD628F6624B00009C61 /* WeekRepository.swift in Sources */,
 				64134BAF28F3A61600009C61 /* SignInViewModel.swift in Sources */,
@@ -1102,6 +1110,14 @@
 				minimumVersion = 0.2.2;
 			};
 		};
+		64471D432911E4F700F09C58 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/marmelroy/PhoneNumberKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		645A48A528F9B1CB00FD1228 /* XCRemoteSwiftPackageReference "CongregationServiceKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Mannydefreitas7/CongregationServiceKit";
@@ -1193,6 +1209,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 64471D23291020CE00F09C58 /* XCRemoteSwiftPackageReference "CodableFirebase" */;
 			productName = CodableFirebase;
+		};
+		64471D442911E4F700F09C58 /* PhoneNumberKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 64471D432911E4F700F09C58 /* XCRemoteSwiftPackageReference "PhoneNumberKit" */;
+			productName = PhoneNumberKit;
 		};
 		645A48A828F9EB7A00FD1228 /* CongregationServiceKit */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -34,6 +34,7 @@ final class SetupViewModel: ObservableObject {
     @Published var newUser: ABUser = ABUser()
     @Published var congregation: ABCongregation = ABCongregation()
     @Published var confirmEmail: String = ""
+    @Published var password: String = ""
     @Published var filteredLanguages: [WOLLanguage] = [WOLLanguage]()
     @Published var language: WOLLanguage?
     @Published var queryLanguage: String = ""
@@ -211,7 +212,7 @@ final class SetupViewModel: ObservableObject {
         case .welcome:
             return true
         case .user:
-            if let email = newUser.email, let firstName = newUser.firstName, !firstName.isEmpty, let lastName = newUser.lastName, !lastName.isEmpty, !email.isEmpty && !confirmEmail.isEmpty && email == confirmEmail {
+            if let email = newUser.email, let firstName = newUser.firstName, !firstName.isEmpty, let lastName = newUser.lastName, !lastName.isEmpty, !email.isEmpty && !confirmEmail.isEmpty && email == confirmEmail && email.isValidEmail() {
                 return true
             }
         case .language:

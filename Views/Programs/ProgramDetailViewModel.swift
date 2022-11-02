@@ -42,7 +42,7 @@ class ProgramDetailViewModel: ObservableObject {
             .store(in: &cancellables)
         
         Task {
-            await fetch()
+            await self.fetch()
         }
         
         $week
@@ -116,7 +116,6 @@ class ProgramDetailViewModel: ObservableObject {
             .assign(to: \.watchtowerViewModel, on: self)
             .store(in: &cancellables)
 
-        
     }
     
     
@@ -134,8 +133,8 @@ class ProgramDetailViewModel: ObservableObject {
     func fetch() async {
         if let congregation, let week, let weekID = week.id {
             do {
-              //  try await partRepository.fetchParts(weekID, congregation: congregation.id)
-                partRepository.listen(weekID, congregationID: congregation.id)
+                try await partRepository.fetchParts(weekID, congregation: congregation.id)
+              //  partRepository.listen(weekID, congregationID: congregation.id)
             } catch {
                 print(error.localizedDescription)
             }

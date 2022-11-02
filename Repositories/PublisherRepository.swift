@@ -22,7 +22,10 @@ class PublisherRepository: ObservableObject {
     @Published var publishers: [ABPublisher] = [ABPublisher]()
     
     init() {
-        self.listen()
+        Task {
+            await fetch()
+        }
+        //self.listen()
     }
     
     deinit {
@@ -68,6 +71,15 @@ class PublisherRepository: ObservableObject {
             print(error.localizedDescription)
         }
         return nil
+    }
+    
+    func update(_ publisher: ABPublisher, congregationID: String) async throws {
+        let data = try encoder.encode(publisher)
+        try await firestore.document("congregations/\(congregationID)/publishers/\(publisher.id)").setData(data, merge: true)
+    }
+    
+    func updateFields(_ fields: [AnyHashable : Any], for publisher: ABPublisher, congregationID: String) async throws {
+        try await firestore.document("congregations/\(congregationID)/publishers/\(publisher.id)").updateData(fields)
     }
     
     func add(_ publisher: ABPublisher, congregationID: String) async throws {

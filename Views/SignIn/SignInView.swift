@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import AuthenticationServices
 
 struct SignInView: View {
     
     @StateObject var viewModel: SignInViewModel = SignInViewModel()
     @EnvironmentObject var appState: AssembleeAppState
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         VStack {
@@ -26,7 +28,6 @@ struct SignInView: View {
                     Text("Sign In")
                         .font(.largeTitle)
                         .bold()
-                   // Spacer()
                 }
       
                 Form {
@@ -45,12 +46,21 @@ struct SignInView: View {
                         }
                         .buttonStyle(.borderedProminent)
                         .padding(.top)
+                        .disabled(!viewModel.isValid)
 
                 }
                 .formStyle(.columns)
                 .onSubmit {
                     //
                 }
+                
+                HStack {
+                  VStack { Divider() }
+                  Text("or")
+                  VStack { Divider() }
+                }
+                
+                appleSignInButton()
             
                
             }
@@ -79,6 +89,16 @@ struct SignInView: View {
            
         }
         .edgesIgnoringSafeArea(.bottom)
+    }
+    @ViewBuilder func appleSignInButton() -> some View {
+        SignInWithAppleButton(.signIn) { request in
+            viewModel.handleSignInWithAppleRequest(request)
+          } onCompletion: { result in
+            viewModel.handleSignInWithAppleCompletion(result)
+          }
+          .signInWithAppleButtonStyle(colorScheme == .light ? .black : .white)
+          .frame(maxWidth: .infinity, maxHeight: 50)
+          .cornerRadius(8)
     }
 }
 
