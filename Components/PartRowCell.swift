@@ -44,7 +44,7 @@ struct PartRowCell: View {
                                 }
                          
                         }
-                        .padding(.leading)
+                        .padding(.top, 5)
 
                     }
                     Spacer()

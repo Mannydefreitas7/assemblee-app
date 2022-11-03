@@ -35,7 +35,7 @@ struct SchedulePart: View {
                         .font(.title3)
                 }
             }
-            .padding(.leading)
+        
             .padding(.bottom, 5)
         }
     }

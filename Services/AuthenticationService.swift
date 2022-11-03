@@ -40,7 +40,7 @@ class AuthenticationService: ObservableObject {
             logManager.display(.error, title: "Error", message: error.localizedDescription)
         }
        
-        if let handle = handle {
+        if let handle {
             Auth.auth().removeStateDidChangeListener(handle)
         }
         
@@ -56,7 +56,7 @@ class AuthenticationService: ObservableObject {
     
     init() {
         registerStateListener()
-        verifySignInWithAppleAuthenticationState()
+        //verifySignInWithAppleAuthenticationState()
     }
     
 

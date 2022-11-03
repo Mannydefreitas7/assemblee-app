@@ -41,6 +41,44 @@ struct PublishersView: View {
         .navigationTitle(viewType == .list ? "Publishers" : "Select Publisher")
         .navigationBarTitleDisplayMode(viewType == .list ? .large : .inline)
         .navigationDestination(for: PublisherDetailViewModel.self) { PublisherDetailView(viewModel: $0) }
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button {
+                    viewModel.showAddPublisherSheet.toggle()
+                } label: {
+                    Label("Publisher", systemImage: "plus.circle.fill")
+                        .labelStyle(.titleAndIcon)
+                        .symbolRenderingMode(.hierarchical)
+                }
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Menu {
+                    Button {
+                        viewModel.showFileImporter.toggle()
+                    } label: {
+                        Label("Import from Hourglass", systemImage: "square.and.arrow.down")
+                    }
+                } label: {
+                    Label("More", systemImage: "ellipsis.circle.fill")
+                        .symbolRenderingMode(.hierarchical)
+                }
+
+                
+            }
+        }
+        .sheet(isPresented: $viewModel.showAddPublisherSheet) {
+            NavigationStack {
+                AddPublisherView()
+                    .navigationTitle("New Publisher")
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+        }
+        .fileImporter(isPresented: $viewModel.showFileImporter, allowedContentTypes: [.commaSeparatedText]) { result in
+            switch result {
+            case .success(let url): print(url)
+            case .failure(let error): print(error)
+            }
+        }
     }
     
     @ViewBuilder func selectPublisherRow(_ publisher: Binding<ABPublisher>) -> some View {

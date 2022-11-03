@@ -22,14 +22,16 @@ class PublisherRepository: ObservableObject {
     @Published var publishers: [ABPublisher] = [ABPublisher]()
     
     init() {
-        //Task {
-        //    await fetch()
-        //  }
-        self.listen()
+        if let listener {
+            print("PUBLISHER REPOSITORY DE-INITIATED")
+            listener.remove()
+        }
     }
     
     deinit {
+       
         if let listener {
+            print("PUBLISHER REPOSITORY DE-INITIATED")
             listener.remove()
         }
     }
@@ -48,8 +50,9 @@ class PublisherRepository: ObservableObject {
     }
     
     func listen() {
+       
         if let congregationData = UserDefaults.standard.data(forKey: "congregation"), let congregation = self.fetchCongregation(from: congregationData) {
-               
+            print("PUBLISHER REPOSITORY INITIATED")
             self.listener = firestore.collection("congregations/\(congregation.id)/publishers")
                 .addSnapshotListener { querySnapshot, _ in
                     do {

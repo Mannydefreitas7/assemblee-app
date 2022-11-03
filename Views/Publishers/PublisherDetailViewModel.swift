@@ -16,7 +16,7 @@ class PublisherDetailViewModel: ObservableObject {
     
     private var cancellables = Set<AnyCancellable>()
  
-    @Published var publisher: ABPublisher?
+    @Published var publisher: ABPublisher = ABPublisher.newPublisher()
     @Published var congregation: ABCongregation?
     @Published var editMode: EditMode = .inactive
     private var publisherRepository = PublisherRepository()
@@ -27,8 +27,10 @@ class PublisherDetailViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var phone: String = ""
     @Published var gender: ABGender?
+    @Published var privilege: ABPrivilege?
     @Published var isDirty: Bool = false
     @Published var message: String = ""
+    @Published var code: String = ""
     let phoneNumberKit = PhoneNumberKit()
     @Published var logManager = LogManager()
     
@@ -57,7 +59,6 @@ class PublisherDetailViewModel: ObservableObject {
             .compactMap { $0 }
             .assign(to: \.lastName, on: self)
             .store(in: &cancellables)
-    
         
         $publisher
             .compactMap { $0 }
@@ -80,20 +81,21 @@ class PublisherDetailViewModel: ObservableObject {
             .map {  ABGender(rawValue: $0) }
             .assign(to: \.gender, on: self)
             .store(in: &cancellables)
-
         
         $publisher
-            .dropFirst()
-            .removeDuplicates()
-            .sink { _publisher in
-                Task {
-                    await self.udapte(publisher)
-                }
-            }
+            .compactMap { $0 }
+            .map { $0.privilege }
+            .compactMap { $0 }
+            .map {  ABPrivilege(rawValue: $0) }
+            .assign(to: \.privilege, on: self)
             .store(in: &cancellables)
         
-        
-        
+        $publisher
+            .compactMap { $0 }
+            .map { $0.code }
+            .assign(to: \.code, on: self)
+            .store(in: &cancellables)
+            
     }
     
     
@@ -125,10 +127,11 @@ class PublisherDetailViewModel: ObservableObject {
         return number
     }
     
-    func udapte(_ publisher: ABPublisher) async {
+    func udapte() async {
         do {
             if let congregation {
-                try await publisherRepository.update(publisher, congregationID: congregation.id)
+                // Saving data to publisher
+                try await publisherRepository.update(self.publisher, congregationID: congregation.id)
                 self.logManager.display(.success, title: "Updated")
             }
         } catch {
@@ -143,6 +146,9 @@ class PublisherDetailViewModel: ObservableObject {
             completion(.active)
         } else {
             editMode = .inactive
+            Task {
+                await self.udapte()
+            }
             completion(.inactive)
         }
     }

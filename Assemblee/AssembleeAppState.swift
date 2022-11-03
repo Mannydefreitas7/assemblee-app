@@ -29,6 +29,8 @@ class AssembleeAppState: ObservableObject {
     var observer: NSKeyValueObservation?
     
     init() {
+    
+        authenticationService.verifySignInWithAppleAuthenticationState()
         
         userRepository.$currentUser
             .assign(to: \.currentUser, on: self)

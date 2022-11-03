@@ -19,13 +19,14 @@ class PublishersViewModel: ObservableObject {
     @Published var logManager = LogManager()
     @Published var congregation: ABCongregation?
     @Published var showAddPublisherSheet: Bool = false
+    @Published var showFileImporter: Bool = false
     @Published var searchText: String = ""
-    
     private var cancellables = Set<AnyCancellable>()
     
     
     init() {
         
+        publisherRepository.listen()
         
         UserDefaults.standard.data(forKey: "congregation").publisher
             .map { self.fetchCongregation(from: $0) }
@@ -50,7 +51,7 @@ class PublishersViewModel: ObservableObject {
             .store(in: &cancellables)
         
     }
-
+    
     
     func fetchCongregation(from data: Data) -> ABCongregation? {
         do {

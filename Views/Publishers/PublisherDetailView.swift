@@ -12,7 +12,9 @@ struct PublisherDetailView: View {
     @ObservedObject var viewModel: PublisherDetailViewModel
     @Environment(\.editMode) var editMode
     @FocusState private var focusedField: String?
-    let columns = [GridItem(.flexible()), GridItem(.flexible())]
+    let genderCols = [GridItem(.flexible()), GridItem(.flexible())]
+    let generalCols = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
+    
     
     var body: some View {
         VStack(spacing: 0) {
@@ -25,7 +27,7 @@ struct PublisherDetailView: View {
                     Text("\(viewModel.lastName), \(viewModel.firstName)")
                         .bold()
                         .font(.title3)
-                    Text(viewModel.publisher?.email ?? "")
+                    Text(viewModel.email)
                         .foregroundColor(.secondary)
                 }
                 .padding(.bottom)
@@ -36,17 +38,19 @@ struct PublisherDetailView: View {
             
             List {
                 
+                generalOptions()
+                
                 
                 Section("Name") {
                     if viewModel.editMode == .inactive {
                         Text("First Name")
-                            .badge(viewModel.firstName)
+                            .badge(viewModel.publisher.firstName ?? "")
                         Text("Last Name")
-                            .badge(viewModel.lastName)
+                            .badge(viewModel.publisher.lastName ?? "")
                     } else {
-                         TextField("First Name", text: $viewModel.firstName)
+                        TextField("First Name", text: $viewModel.publisher.firstName ?? "")
                             .focused($focusedField, equals: "first_name")
-                         TextField("Last Name", text: $viewModel.lastName)
+                        TextField("Last Name", text: $viewModel.publisher.lastName ?? "")
                             .focused($focusedField, equals: "last_name")
                     }
 
@@ -58,21 +62,21 @@ struct PublisherDetailView: View {
                         HStack {
                             Image(systemName: "envelope.circle.fill")
                             Text("Email")
-                                .badge(viewModel.publisher?.email ?? "")
+                                .badge(viewModel.publisher.email ?? "")
                         }
                         .padding(.vertical, 7)
                         HStack {
                             Image(systemName: "phone.circle.fill")
                             Text("Phone")
-                                .badge(viewModel.publisher?.phone ?? "")
+                                .badge(viewModel.publisher.phone ?? "")
                         }
                         .padding(.vertical, 7)
                     } else {
-                        TextField("Email", text: $viewModel.email)
+                        TextField("Email", text: $viewModel.publisher.email ?? "")
                             .keyboardType(.emailAddress)
                             .textContentType(.emailAddress)
                             .padding(.vertical, 7)
-                        TextField("Phone", text: $viewModel.phone)
+                        TextField("Phone", text: $viewModel.publisher.phone ?? "")
                             .keyboardType(.phonePad)
                             .textContentType(.telephoneNumber)
                             .padding(.vertical, 7)
@@ -85,6 +89,8 @@ struct PublisherDetailView: View {
                             .foregroundColor(Color(.systemRed))
                     }
                 }
+                
+                privilegePicker()
                 
                 genderOptions()
             }
@@ -111,20 +117,48 @@ struct PublisherDetailView: View {
     @ViewBuilder func genderOptions() -> some View {
         Section("Gender") {
             
-            LazyVGrid(columns: columns) {
+            LazyVGrid(columns: genderCols) {
                 
                 
                 genderButton(label: "Brother", image: "brother") {
-                    //
+                    viewModel.publisher.gender = ABGender.brother.rawValue
                 }
                 .disabled(viewModel.editMode == .inactive)
                 
                 genderButton(label: "Sister", image: "sister") {
-                    //
+                    viewModel.publisher.gender = ABGender.sister.rawValue
                 }
                 .disabled(viewModel.editMode == .inactive)
                 
             }
+            .listRowBackground(Color.clear)
+            .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
+        }
+    }
+    
+    // MARK: Grid options
+    @ViewBuilder func generalOptions() -> some View {
+        Section {
+            
+            LazyVGrid(columns: generalCols) {
+                
+                
+                generalOptionButton(label: "Invite", image: "paperplane") {
+                    viewModel.publisher.gender = ABGender.brother.rawValue
+                }
+               
+                
+                generalOptionButton(label: "Code", image: "qrcode") {
+                    viewModel.publisher.gender = ABGender.sister.rawValue
+                }
+               
+                
+                generalOptionButton(label: "Email", image: "envelope") {
+                    viewModel.publisher.gender = ABGender.sister.rawValue
+                }
+        
+            }
+            
             .listRowBackground(Color.clear)
             .listRowInsets(.init(top: 0, leading: 0, bottom: 0, trailing: 0))
         }
@@ -147,5 +181,44 @@ struct PublisherDetailView: View {
             .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
         }
         .buttonStyle(.plain)
+    }
+    
+    @ViewBuilder func generalOptionButton(label: String, image: String, action: @escaping () -> Void) -> some View {
+        Button {
+            action()
+        } label: {
+            LazyVStack(spacing: 5) {
+                Image(systemName: image)
+                Text(label)
+            }
+            .padding()
+            .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+        }
+        .frame(minHeight: 80)
+        .buttonStyle(.plain)
+    }
+    
+    @ViewBuilder func privilegePicker() -> some View {
+        if viewModel.editMode == .active {
+            Picker("Privilege", selection: $viewModel.publisher.privilege ?? "") {
+                Text(ABPrivilege.publisher.rawValue.capitalized)
+                    .tag(ABPrivilege.publisher.rawValue)
+                if viewModel.gender == .brother {
+                    Text(ABPrivilege.elder.rawValue.capitalized)
+                        .tag(ABPrivilege.elder.rawValue)
+                    Text(ABPrivilege.assistant.rawValue.capitalized)
+                        .tag(ABPrivilege.assistant.rawValue)
+                }
+            }
+        } else {
+            HStack {
+                Image(systemName: "person.text.rectangle.fill")
+                Text("Privilege")
+                    .badge(viewModel.privilege?.rawValue.capitalized ?? "")
+            }
+           
+        }
+  
+
     }
 }

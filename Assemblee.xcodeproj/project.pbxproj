@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F48F9D22914479D00B3CCDB /* AddPublisherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F48F9D12914479D00B3CCDB /* AddPublisherView.swift */; };
+		3F48F9D4291447B100B3CCDB /* AddPublisherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F48F9D3291447B100B3CCDB /* AddPublisherViewModel.swift */; };
 		64134B5F28F39C1A00009C61 /* AssembleeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64134B5E28F39C1A00009C61 /* AssembleeApp.swift */; };
 		64134B6128F39C1A00009C61 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64134B6028F39C1A00009C61 /* ContentView.swift */; };
 		64134B6328F39C1B00009C61 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64134B6228F39C1B00009C61 /* Assets.xcassets */; };
@@ -114,6 +116,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F48F9D12914479D00B3CCDB /* AddPublisherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPublisherView.swift; sourceTree = "<group>"; };
+		3F48F9D3291447B100B3CCDB /* AddPublisherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPublisherViewModel.swift; sourceTree = "<group>"; };
 		64134B5B28F39C1A00009C61 /* Assemblee.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Assemblee.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64134B5E28F39C1A00009C61 /* AssembleeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssembleeApp.swift; sourceTree = "<group>"; };
 		64134B6028F39C1A00009C61 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -467,6 +471,8 @@
 				64471D3B2910CB0900F09C58 /* PublishersViewModel.swift */,
 				64471D3D2911611700F09C58 /* PublisherDetailView.swift */,
 				64471D3F2911620A00F09C58 /* PublisherDetailViewModel.swift */,
+				3F48F9D12914479D00B3CCDB /* AddPublisherView.swift */,
+				3F48F9D3291447B100B3CCDB /* AddPublisherViewModel.swift */,
 			);
 			path = Publishers;
 			sourceTree = "<group>";
@@ -679,6 +685,7 @@
 				6438CF8D2908DBBA00732FDD /* CalendarView.swift in Sources */,
 				64471D402911620A00F09C58 /* PublisherDetailViewModel.swift in Sources */,
 				64471D20290F722600F09C58 /* CalendarModifier.swift in Sources */,
+				3F48F9D4291447B100B3CCDB /* AddPublisherViewModel.swift in Sources */,
 				64B4C7B1290E145400FA232E /* LogManager.swift in Sources */,
 				64134BC428F4AFB800009C61 /* HeaderScrollView.swift in Sources */,
 				64134BB228F3B03400009C61 /* Extension.swift in Sources */,
@@ -720,6 +727,7 @@
 				64471D352910A9C900F09C58 /* PillView.swift in Sources */,
 				64134BC228F42E6F00009C61 /* ObservableScrollView.swift in Sources */,
 				64471D2929102D7800F09C58 /* ProgramDetailViewModel.swift in Sources */,
+				3F48F9D22914479D00B3CCDB /* AddPublisherView.swift in Sources */,
 				64471D3E2911611700F09C58 /* PublisherDetailView.swift in Sources */,
 				64471D1C290F70D100F09C58 /* ToastModifier.swift in Sources */,
 				64471D17290F64F100F09C58 /* ProgramsView.swift in Sources */,
