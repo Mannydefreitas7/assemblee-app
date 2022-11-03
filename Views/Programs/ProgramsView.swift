@@ -9,7 +9,7 @@ import SwiftUI
 import CongregationServiceKit
 
 struct ProgramsView: View {
-    @StateObject var viewModel = ProgramsViewModel()
+    @ObservedObject var viewModel: ProgramsViewModel
     @EnvironmentObject var appState: AssembleeAppState
     var body: some View {
         List {

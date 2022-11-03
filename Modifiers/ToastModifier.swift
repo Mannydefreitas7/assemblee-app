@@ -19,7 +19,7 @@ struct ToastModifier: ViewModifier {
                     case .success:
                     return AlertToast(displayMode: .alert, type: .complete(.accentColor), title: logManager.toastItem.title, subTitle: logManager.toastItem.message)
                     case .error:
-                    return AlertToast(displayMode: .hud, type: .error(Color(.systemRed)), title: logManager.toastItem.title, subTitle: logManager.toastItem.message)
+                    return AlertToast(displayMode: .banner(.pop), type: .error(Color(.systemRed)), title: logManager.toastItem.title, subTitle: logManager.toastItem.message)
                     case .info:
                     return AlertToast(displayMode: .banner(.pop), type: .systemImage("exclamationmark.circle.fill", Color(.systemBlue)), title: logManager.toastItem.title, subTitle: logManager.toastItem.message)
                     case .warning:

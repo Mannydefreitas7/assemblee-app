@@ -14,7 +14,7 @@ class ProgramsViewModel: ObservableObject {
     @Published var scheduleByMonths = [Int]()
     @Published var weekRepository = WeekRepository()
     @Published var weeks: [ABWeek] = [ABWeek]()
-    @Published var appState = AssembleeAppState()
+    @Published var appState: AssembleeAppState?
     @Published var logManager = LogManager()
     @Published var congregation: ABCongregation?
     @Published var showAddScheduleSheet: Bool = false
@@ -30,7 +30,9 @@ class ProgramsViewModel: ObservableObject {
         return Array(array)
        }
     
-    init() {
+    init(appState: AssembleeAppState) {
+        
+        self.appState = appState
         
         UserDefaults.standard.data(forKey: "congregation").publisher
             .map { self.fetchCongregation(from: $0) }

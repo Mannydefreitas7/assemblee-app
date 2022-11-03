@@ -18,6 +18,7 @@ class PublisherDetailViewModel: ObservableObject {
  
     @Published var publisher: ABPublisher?
     @Published var congregation: ABCongregation?
+    @Published var editMode: EditMode = .inactive
     private var publisherRepository = PublisherRepository()
 
     
@@ -63,6 +64,13 @@ class PublisherDetailViewModel: ObservableObject {
             .map { $0.phone }
             .compactMap { $0 }
             .assign(to: \.phone, on: self)
+            .store(in: &cancellables)
+        
+        $publisher
+            .compactMap { $0 }
+            .map { $0.email }
+            .compactMap { $0 }
+            .assign(to: \.email, on: self)
             .store(in: &cancellables)
         
         $publisher
@@ -128,7 +136,16 @@ class PublisherDetailViewModel: ObservableObject {
             print(error.localizedDescription)
         }
     }
-
+    
+    func toggleEdit(completion: @escaping (_ editMode: EditMode) -> Void) {
+        if editMode == .inactive {
+            editMode = .active
+            completion(.active)
+        } else {
+            editMode = .inactive
+            completion(.inactive)
+        }
+    }
     
 }
 

@@ -23,7 +23,7 @@ struct ABTabView: View {
             if let currentUser = appState.currentUser, let permissions = currentUser.permissions, permissions.contains(ABPermission.editor.rawValue) || permissions.contains(ABPermission.admin.rawValue) {
                 
                 NavigationStack {
-                    ProgramsView()
+                    ProgramsView(viewModel: ProgramsViewModel(appState: appState))
                 }
                 .tabItem {
                     Label("Programs", systemImage: "chart.bar.doc.horizontal")

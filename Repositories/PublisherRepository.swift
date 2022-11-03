@@ -22,10 +22,10 @@ class PublisherRepository: ObservableObject {
     @Published var publishers: [ABPublisher] = [ABPublisher]()
     
     init() {
-        Task {
-            await fetch()
-        }
-        //self.listen()
+        //Task {
+        //    await fetch()
+        //  }
+        self.listen()
     }
     
     deinit {

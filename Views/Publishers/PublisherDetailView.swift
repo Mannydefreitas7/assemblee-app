@@ -10,7 +10,8 @@ import SwiftUI
 struct PublisherDetailView: View {
     
     @ObservedObject var viewModel: PublisherDetailViewModel
-    
+    @Environment(\.editMode) var editMode
+    @FocusState private var focusedField: String?
     let columns = [GridItem(.flexible()), GridItem(.flexible())]
     
     var body: some View {
@@ -24,7 +25,7 @@ struct PublisherDetailView: View {
                     Text("\(viewModel.lastName), \(viewModel.firstName)")
                         .bold()
                         .font(.title3)
-                    Text(viewModel.email)
+                    Text(viewModel.publisher?.email ?? "")
                         .foregroundColor(.secondary)
                 }
                 .padding(.bottom)
@@ -37,28 +38,45 @@ struct PublisherDetailView: View {
                 
                 
                 Section("Name") {
-                    TextField("First Name", text: $viewModel.firstName)
-                    TextField("Last Name", text: $viewModel.lastName)
+                    if viewModel.editMode == .inactive {
+                        Text("First Name")
+                            .badge(viewModel.firstName)
+                        Text("Last Name")
+                            .badge(viewModel.lastName)
+                    } else {
+                         TextField("First Name", text: $viewModel.firstName)
+                            .focused($focusedField, equals: "first_name")
+                         TextField("Last Name", text: $viewModel.lastName)
+                            .focused($focusedField, equals: "last_name")
+                    }
+
                 }
+             
             
                 Section {
-                    HStack {
-                        Image(systemName: "envelope.circle.fill")
-                        Text("Email")
-                            .badge(viewModel.publisher?.email ?? "")
-                    }
-                    .padding(.vertical, 7)
-                    
-                    HStack {
-                        Image(systemName: "phone.circle.fill")
-                        Text("Phone")
-                        Spacer()
+                    if viewModel.editMode == .inactive {
+                        HStack {
+                            Image(systemName: "envelope.circle.fill")
+                            Text("Email")
+                                .badge(viewModel.publisher?.email ?? "")
+                        }
+                        .padding(.vertical, 7)
+                        HStack {
+                            Image(systemName: "phone.circle.fill")
+                            Text("Phone")
+                                .badge(viewModel.publisher?.phone ?? "")
+                        }
+                        .padding(.vertical, 7)
+                    } else {
+                        TextField("Email", text: $viewModel.email)
+                            .keyboardType(.emailAddress)
+                            .textContentType(.emailAddress)
+                            .padding(.vertical, 7)
                         TextField("Phone", text: $viewModel.phone)
                             .keyboardType(.phonePad)
                             .textContentType(.telephoneNumber)
-                            .multilineTextAlignment(.trailing)
+                            .padding(.vertical, 7)
                     }
-                    .padding(.vertical, 7)
                 } header: {
                     Text("Contact")
                 } footer: {
@@ -74,6 +92,19 @@ struct PublisherDetailView: View {
         .navigationTitle("\(viewModel.lastName), \(viewModel.firstName)")
         .navigationBarTitleDisplayMode(.inline)
         .toastAlert(logManager: viewModel.logManager)
+        .toolbar {
+            ToolbarItem(placement: .confirmationAction) {
+                Button {
+                    viewModel.toggleEdit { editMode in
+                        focusedField = editMode == .active ? "first_name" : nil
+                    }
+                } label: {
+                    Text(viewModel.editMode == .inactive ? "Edit": "Done")
+                        .bold()
+                }
+            }
+        }
+        .environment(\.editMode, $viewModel.editMode)
     }
     
     // MARK: Grid options
@@ -86,10 +117,12 @@ struct PublisherDetailView: View {
                 genderButton(label: "Brother", image: "brother") {
                     //
                 }
+                .disabled(viewModel.editMode == .inactive)
                 
                 genderButton(label: "Sister", image: "sister") {
                     //
                 }
+                .disabled(viewModel.editMode == .inactive)
                 
             }
             .listRowBackground(Color.clear)

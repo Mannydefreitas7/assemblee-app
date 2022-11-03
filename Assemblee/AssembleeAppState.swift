@@ -43,6 +43,8 @@ class AssembleeAppState: ObservableObject {
              }
             .store(in: &cancellables)
         
+        
+        
         congregationRepository.$congregation
             .assign(to: \.congregation, on: self)
             .store(in: &cancellables)
